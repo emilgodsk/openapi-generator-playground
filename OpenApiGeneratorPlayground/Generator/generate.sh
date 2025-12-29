@@ -41,7 +41,7 @@ echo " - Generating the client code..."
   -i $INPUT_SPEC_FILE \
   -g csharp \
   -o $OUTPUT_FOLDER \
-  --additional-properties=sourceFolder=./,packageName=$CLIENT_PACKAGE,library=generichost,targetFramework=net8.0,optionalProjectFile=false,nullableReferenceTypes=true,optionalEmitDefaultValues=true,modelPackage=Models,clientPackage=Common,apiPackage=ApiClients \
+  --additional-properties=sourceFolder=./,packageName=$CLIENT_PACKAGE,library=generichost,targetFramework=net8.0,optionalProjectFile=false,nullableReferenceTypes=true,optionalEmitDefaultValues=true,modelPackage=Models,clientPackage=Common,apiPackage=ApiClients,validatable=false \
   2>&1 1>/dev/null) | cat
 
 echo " - Cleaning up generated files..."
@@ -58,7 +58,7 @@ echo " - Generating the models for the server..."
   -i $INPUT_SPEC_FILE \
   -g csharp \
   -o $OUTPUT_FOLDER \
-  --additional-properties=sourceFolder=./,packageName=$SERVER_PACKAGE,library=generichost,targetFramework=net8.0,optionalProjectFile=false,nullableReferenceTypes=true,optionalEmitDefaultValues=true,modelPackage=Models,clientPackage=Common,apiPackage=ApiClients \
+  --additional-properties=sourceFolder=./,packageName=$SERVER_PACKAGE,library=generichost,targetFramework=net8.0,optionalProjectFile=false,nullableReferenceTypes=true,optionalEmitDefaultValues=true,modelPackage=Models,clientPackage=Common,apiPackage=ApiClients,validatable=false \
   2>&1 1>/dev/null) | cat
 
 echo " - Generating the server code..."

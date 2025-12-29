@@ -20,7 +20,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.ComponentModel.DataAnnotations;
 using MyPackageServer.Common;
 
 namespace MyPackageServer.Models
@@ -28,7 +27,7 @@ namespace MyPackageServer.Models
     /// <summary>
     /// DataExportJobRequest
     /// </summary>
-    public partial class DataExportJobRequest : IValidatableObject
+    public partial class DataExportJobRequest
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataExportJobRequest" /> class.
@@ -203,16 +202,6 @@ namespace MyPackageServer.Models
             sb.Append("  IncludeMetadata: ").Append(IncludeMetadata).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
-        }
-
-        /// <summary>
-        /// To validate all properties of the instance
-        /// </summary>
-        /// <param name="validationContext">Validation context</param>
-        /// <returns>Validation Result</returns>
-        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
-        {
-            yield break;
         }
     }
 

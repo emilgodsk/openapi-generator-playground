@@ -20,7 +20,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.ComponentModel.DataAnnotations;
 using MyPackageServer.Common;
 
 namespace MyPackageServer.Models
@@ -28,7 +27,7 @@ namespace MyPackageServer.Models
     /// <summary>
     /// Error
     /// </summary>
-    public partial class Error : IValidatableObject
+    public partial class Error
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Error" /> class.
@@ -85,16 +84,6 @@ namespace MyPackageServer.Models
             sb.Append("  Details: ").Append(Details).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
-        }
-
-        /// <summary>
-        /// To validate all properties of the instance
-        /// </summary>
-        /// <param name="validationContext">Validation context</param>
-        /// <returns>Validation Result</returns>
-        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
-        {
-            yield break;
         }
     }
 

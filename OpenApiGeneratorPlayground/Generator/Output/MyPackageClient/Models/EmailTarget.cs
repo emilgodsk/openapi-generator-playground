@@ -20,7 +20,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.ComponentModel.DataAnnotations;
 using MyPackageClient.Common;
 
 namespace MyPackageClient.Models
@@ -28,7 +27,7 @@ namespace MyPackageClient.Models
     /// <summary>
     /// EmailTarget
     /// </summary>
-    public partial class EmailTarget : IValidatableObject
+    public partial class EmailTarget
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EmailTarget" /> class.
@@ -60,16 +59,6 @@ namespace MyPackageClient.Models
             sb.Append("  Email: ").Append(Email).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
-        }
-
-        /// <summary>
-        /// To validate all properties of the instance
-        /// </summary>
-        /// <param name="validationContext">Validation context</param>
-        /// <returns>Validation Result</returns>
-        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
-        {
-            yield break;
         }
     }
 

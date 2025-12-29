@@ -20,7 +20,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.ComponentModel.DataAnnotations;
 using MyPackageServer.Common;
 
 namespace MyPackageServer.Models
@@ -28,7 +27,7 @@ namespace MyPackageServer.Models
     /// <summary>
     /// Job
     /// </summary>
-    public partial class Job : IValidatableObject
+    public partial class Job
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Job" /> class.
@@ -232,26 +231,6 @@ namespace MyPackageServer.Models
             sb.Append("  DownloadUrl: ").Append(DownloadUrl).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
-        }
-
-        /// <summary>
-        /// To validate all properties of the instance
-        /// </summary>
-        /// <param name="validationContext">Validation context</param>
-        /// <returns>Validation Result</returns>
-        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
-        {
-            return this.BaseValidate(validationContext);
-        }
-
-        /// <summary>
-        /// To validate all properties of the instance
-        /// </summary>
-        /// <param name="validationContext">Validation context</param>
-        /// <returns>Validation Result</returns>
-        protected IEnumerable<ValidationResult> BaseValidate(ValidationContext validationContext)
-        {
-            yield break;
         }
     }
 
