@@ -21,89 +21,29 @@ using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
-using MyPackageServer.Common;
+using MyPackageClient.Common;
 
-namespace MyPackageServer.Models
+namespace MyPackageClient.Models
 {
     /// <summary>
-    /// DataExportJobRequest
+    /// DataExportJob
     /// </summary>
-    public partial class DataExportJobRequest : IValidatableObject
+    public partial class DataExportJob : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataExportJobRequest" /> class.
+        /// Initializes a new instance of the <see cref="DataExportJob" /> class.
         /// </summary>
-        /// <param name="type">type</param>
         /// <param name="format">format</param>
-        /// <param name="includeMetadata">includeMetadata (default to false)</param>
+        /// <param name="downloadUrl">downloadUrl</param>
         [JsonConstructor]
-        public DataExportJobRequest(TypeEnum type, FormatEnum format, Option<bool?> includeMetadata = default)
+        public DataExportJob(Option<FormatEnum?> format = default, Option<string?> downloadUrl = default)
         {
-            Type = type;
-            Format = format;
-            IncludeMetadataOption = includeMetadata;
+            FormatOption = format;
+            DownloadUrlOption = downloadUrl;
             OnCreated();
         }
 
         partial void OnCreated();
-
-        /// <summary>
-        /// Defines Type
-        /// </summary>
-        public enum TypeEnum
-        {
-            /// <summary>
-            /// Enum DataExport for value: dataExport
-            /// </summary>
-            DataExport = 1
-        }
-
-        /// <summary>
-        /// Returns a <see cref="TypeEnum"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static TypeEnum TypeEnumFromString(string value)
-        {
-            if (value.Equals("dataExport"))
-                return TypeEnum.DataExport;
-
-            throw new NotImplementedException($"Could not convert value to type TypeEnum: '{value}'");
-        }
-
-        /// <summary>
-        /// Returns a <see cref="TypeEnum"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static TypeEnum? TypeEnumFromStringOrDefault(string value)
-        {
-            if (value.Equals("dataExport"))
-                return TypeEnum.DataExport;
-
-            return null;
-        }
-
-        /// <summary>
-        /// Converts the <see cref="TypeEnum"/> to the json value
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static string TypeEnumToJsonValue(TypeEnum value)
-        {
-            if (value == TypeEnum.DataExport)
-                return "dataExport";
-
-            throw new NotImplementedException($"Value could not be handled: '{value}'");
-        }
-
-        /// <summary>
-        /// Gets or Sets Type
-        /// </summary>
-        [JsonPropertyName("type")]
-        public TypeEnum Type { get; set; }
 
         /// <summary>
         /// Defines Format
@@ -160,7 +100,7 @@ namespace MyPackageServer.Models
         /// <param name="value"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public static string FormatEnumToJsonValue(FormatEnum value)
+        public static string FormatEnumToJsonValue(FormatEnum? value)
         {
             if (value == FormatEnum.Csv)
                 return "csv";
@@ -172,23 +112,30 @@ namespace MyPackageServer.Models
         }
 
         /// <summary>
-        /// Gets or Sets Format
-        /// </summary>
-        [JsonPropertyName("format")]
-        public FormatEnum Format { get; set; }
-
-        /// <summary>
-        /// Used to track the state of IncludeMetadata
+        /// Used to track the state of Format
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<bool?> IncludeMetadataOption { get; private set; }
+        public Option<FormatEnum?> FormatOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets IncludeMetadata
+        /// Gets or Sets Format
         /// </summary>
-        [JsonPropertyName("includeMetadata")]
-        public bool? IncludeMetadata { get { return this.IncludeMetadataOption; } set { this.IncludeMetadataOption = new(value); } }
+        [JsonPropertyName("format")]
+        public FormatEnum? Format { get { return this.FormatOption; } set { this.FormatOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of DownloadUrl
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> DownloadUrlOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets DownloadUrl
+        /// </summary>
+        [JsonPropertyName("downloadUrl")]
+        public string? DownloadUrl { get { return this.DownloadUrlOption; } set { this.DownloadUrlOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -197,10 +144,9 @@ namespace MyPackageServer.Models
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class DataExportJobRequest {\n");
-            sb.Append("  Type: ").Append(Type).Append("\n");
+            sb.Append("class DataExportJob {\n");
             sb.Append("  Format: ").Append(Format).Append("\n");
-            sb.Append("  IncludeMetadata: ").Append(IncludeMetadata).Append("\n");
+            sb.Append("  DownloadUrl: ").Append(DownloadUrl).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -217,19 +163,19 @@ namespace MyPackageServer.Models
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="DataExportJobRequest" />
+    /// A Json converter for type <see cref="DataExportJob" />
     /// </summary>
-    public class DataExportJobRequestJsonConverter : JsonConverter<DataExportJobRequest>
+    public class DataExportJobJsonConverter : JsonConverter<DataExportJob>
     {
         /// <summary>
-        /// Deserializes json to <see cref="DataExportJobRequest" />
+        /// Deserializes json to <see cref="DataExportJob" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override DataExportJobRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override DataExportJob Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -238,9 +184,8 @@ namespace MyPackageServer.Models
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<DataExportJobRequest.TypeEnum?> type = default;
-            Option<DataExportJobRequest.FormatEnum?> format = default;
-            Option<bool?> includeMetadata = default;
+            Option<DataExportJob.FormatEnum?> format = default;
+            Option<string?> downloadUrl = default;
 
             while (utf8JsonReader.Read())
             {
@@ -257,18 +202,13 @@ namespace MyPackageServer.Models
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "type":
-                            string? typeRawValue = utf8JsonReader.GetString();
-                            if (typeRawValue != null)
-                                type = new Option<DataExportJobRequest.TypeEnum?>(DataExportJobRequest.TypeEnumFromStringOrDefault(typeRawValue));
-                            break;
                         case "format":
                             string? formatRawValue = utf8JsonReader.GetString();
                             if (formatRawValue != null)
-                                format = new Option<DataExportJobRequest.FormatEnum?>(DataExportJobRequest.FormatEnumFromStringOrDefault(formatRawValue));
+                                format = new Option<DataExportJob.FormatEnum?>(DataExportJob.FormatEnumFromStringOrDefault(formatRawValue));
                             break;
-                        case "includeMetadata":
-                            includeMetadata = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                        case "downloadUrl":
+                            downloadUrl = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         default:
                             break;
@@ -276,54 +216,46 @@ namespace MyPackageServer.Models
                 }
             }
 
-            if (!type.IsSet)
-                throw new ArgumentException("Property is required for class DataExportJobRequest.", nameof(type));
-
-            if (!format.IsSet)
-                throw new ArgumentException("Property is required for class DataExportJobRequest.", nameof(format));
-
-            if (type.IsSet && type.Value == null)
-                throw new ArgumentNullException(nameof(type), "Property is not nullable for class DataExportJobRequest.");
-
             if (format.IsSet && format.Value == null)
-                throw new ArgumentNullException(nameof(format), "Property is not nullable for class DataExportJobRequest.");
+                throw new ArgumentNullException(nameof(format), "Property is not nullable for class DataExportJob.");
 
-            if (includeMetadata.IsSet && includeMetadata.Value == null)
-                throw new ArgumentNullException(nameof(includeMetadata), "Property is not nullable for class DataExportJobRequest.");
+            if (downloadUrl.IsSet && downloadUrl.Value == null)
+                throw new ArgumentNullException(nameof(downloadUrl), "Property is not nullable for class DataExportJob.");
 
-            return new DataExportJobRequest(type.Value!.Value!, format.Value!.Value!, includeMetadata);
+            return new DataExportJob(format, downloadUrl);
         }
 
         /// <summary>
-        /// Serializes a <see cref="DataExportJobRequest" />
+        /// Serializes a <see cref="DataExportJob" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="dataExportJobRequest"></param>
+        /// <param name="dataExportJob"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, DataExportJobRequest dataExportJobRequest, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, DataExportJob dataExportJob, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, dataExportJobRequest, jsonSerializerOptions);
+            WriteProperties(writer, dataExportJob, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="DataExportJobRequest" />
+        /// Serializes the properties of <see cref="DataExportJob" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="dataExportJobRequest"></param>
+        /// <param name="dataExportJob"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, DataExportJobRequest dataExportJobRequest, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, DataExportJob dataExportJob, JsonSerializerOptions jsonSerializerOptions)
         {
-            var typeRawValue = DataExportJobRequest.TypeEnumToJsonValue(dataExportJobRequest.Type);
-            writer.WriteString("type", typeRawValue);
-            var formatRawValue = DataExportJobRequest.FormatEnumToJsonValue(dataExportJobRequest.Format);
+            if (dataExportJob.DownloadUrlOption.IsSet && dataExportJob.DownloadUrl == null)
+                throw new ArgumentNullException(nameof(dataExportJob.DownloadUrl), "Property is required for class DataExportJob.");
+
+            var formatRawValue = DataExportJob.FormatEnumToJsonValue(dataExportJob.FormatOption.Value!.Value);
             writer.WriteString("format", formatRawValue);
-            if (dataExportJobRequest.IncludeMetadataOption.IsSet)
-                writer.WriteBoolean("includeMetadata", dataExportJobRequest.IncludeMetadataOption.Value!.Value);
+            if (dataExportJob.DownloadUrlOption.IsSet)
+                writer.WriteString("downloadUrl", dataExportJob.DownloadUrl);
         }
     }
 }

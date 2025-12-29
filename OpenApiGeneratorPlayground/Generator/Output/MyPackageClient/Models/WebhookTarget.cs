@@ -21,9 +21,9 @@ using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
-using MyPackageServer.Common;
+using MyPackageClient.Common;
 
-namespace MyPackageServer.Models
+namespace MyPackageClient.Models
 {
     /// <summary>
     /// WebhookTarget

@@ -1,4 +1,8 @@
+{{! I have removed the [ValidateModelState] from the original file - I want to control these myself. }}
+{{! I have removed the 'using packageName.Attributes;' from the original file - I want to control these myself. }}
+{{! I have removed the auth attributes and swashbuckle from the original file - I want to control these myself. }}
 {{>partial_header}}
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -41,8 +45,8 @@ namespace {{apiPackage}}
         /// <response code="{{code}}">{{message}}</response>{{/responses}}
         [{{httpMethod}}]
         [Route("{{{basePathWithoutHost}}}{{{path}}}")]{{#vendorExtensions.x-aspnetcore-consumes}}
-        [Consumes({{&vendorExtensions.x-aspnetcore-consumes}})]{{/vendorExtensions.x-aspnetcore-consumes}}{{^useSwashbuckle}}{{#responses}}{{#dataType}}
-        [ProducesResponseType(statusCode: {{code}}, type: typeof({{&dataType}}))]{{/dataType}}{{/responses}}{{/useSwashbuckle}}
+        [Consumes({{&vendorExtensions.x-aspnetcore-consumes}})]{{/vendorExtensions.x-aspnetcore-consumes}}{{#responses}}{{#dataType}}
+        [ProducesResponseType(statusCode: {{code}}, type: typeof({{&dataType}}))]{{/dataType}}{{/responses}}
         {{#isDeprecated}}
         [Obsolete]
         {{/isDeprecated}}

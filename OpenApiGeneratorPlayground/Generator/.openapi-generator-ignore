@@ -1,17 +1,19 @@
 # OpenAPI Generator Ignore
+
+# Exclude test files and folders & docs & api files
 docs/**
 *.Test/**
 api/**
 .openapi-generator/FILES
 .openapi-generator/VERSION
 
+# Unnecessary project files
 appveyor.yml
 *.sln
 **/.gitignore
 **/*.nuspec
 README.md
 .gitignore
-
 .DS_Store
 **/README.md
 **/*.csproj

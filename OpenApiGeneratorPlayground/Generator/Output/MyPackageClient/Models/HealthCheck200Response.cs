@@ -21,55 +21,41 @@ using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
-using MyPackageServer.Common;
+using MyPackageClient.Common;
 
-namespace MyPackageServer.Models
+namespace MyPackageClient.Models
 {
     /// <summary>
-    /// EmailJob
+    /// HealthCheck200Response
     /// </summary>
-    public partial class EmailJob : IValidatableObject
+    public partial class HealthCheck200Response : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmailJob" /> class.
+        /// Initializes a new instance of the <see cref="HealthCheck200Response" /> class.
         /// </summary>
-        /// <param name="recipient">recipient</param>
-        /// <param name="subject">subject</param>
+        /// <param name="status">status</param>
         [JsonConstructor]
-        public EmailJob(Option<string?> recipient = default, Option<string?> subject = default)
+        public HealthCheck200Response(Option<string?> status = default)
         {
-            RecipientOption = recipient;
-            SubjectOption = subject;
+            StatusOption = status;
             OnCreated();
         }
 
         partial void OnCreated();
 
         /// <summary>
-        /// Used to track the state of Recipient
+        /// Used to track the state of Status
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> RecipientOption { get; private set; }
+        public Option<string?> StatusOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Recipient
+        /// Gets or Sets Status
         /// </summary>
-        [JsonPropertyName("recipient")]
-        public string? Recipient { get { return this.RecipientOption; } set { this.RecipientOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of Subject
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> SubjectOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets Subject
-        /// </summary>
-        [JsonPropertyName("subject")]
-        public string? Subject { get { return this.SubjectOption; } set { this.SubjectOption = new(value); } }
+        /* <example>ok</example> */
+        [JsonPropertyName("status")]
+        public string? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -78,9 +64,8 @@ namespace MyPackageServer.Models
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class EmailJob {\n");
-            sb.Append("  Recipient: ").Append(Recipient).Append("\n");
-            sb.Append("  Subject: ").Append(Subject).Append("\n");
+            sb.Append("class HealthCheck200Response {\n");
+            sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -97,19 +82,19 @@ namespace MyPackageServer.Models
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="EmailJob" />
+    /// A Json converter for type <see cref="HealthCheck200Response" />
     /// </summary>
-    public class EmailJobJsonConverter : JsonConverter<EmailJob>
+    public class HealthCheck200ResponseJsonConverter : JsonConverter<HealthCheck200Response>
     {
         /// <summary>
-        /// Deserializes json to <see cref="EmailJob" />
+        /// Deserializes json to <see cref="HealthCheck200Response" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override EmailJob Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override HealthCheck200Response Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -118,8 +103,7 @@ namespace MyPackageServer.Models
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> recipient = default;
-            Option<string?> subject = default;
+            Option<string?> status = default;
 
             while (utf8JsonReader.Read())
             {
@@ -136,11 +120,8 @@ namespace MyPackageServer.Models
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "recipient":
-                            recipient = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "subject":
-                            subject = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "status":
+                            status = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         default:
                             break;
@@ -148,50 +129,41 @@ namespace MyPackageServer.Models
                 }
             }
 
-            if (recipient.IsSet && recipient.Value == null)
-                throw new ArgumentNullException(nameof(recipient), "Property is not nullable for class EmailJob.");
+            if (status.IsSet && status.Value == null)
+                throw new ArgumentNullException(nameof(status), "Property is not nullable for class HealthCheck200Response.");
 
-            if (subject.IsSet && subject.Value == null)
-                throw new ArgumentNullException(nameof(subject), "Property is not nullable for class EmailJob.");
-
-            return new EmailJob(recipient, subject);
+            return new HealthCheck200Response(status);
         }
 
         /// <summary>
-        /// Serializes a <see cref="EmailJob" />
+        /// Serializes a <see cref="HealthCheck200Response" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="emailJob"></param>
+        /// <param name="healthCheck200Response"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, EmailJob emailJob, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, HealthCheck200Response healthCheck200Response, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, emailJob, jsonSerializerOptions);
+            WriteProperties(writer, healthCheck200Response, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="EmailJob" />
+        /// Serializes the properties of <see cref="HealthCheck200Response" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="emailJob"></param>
+        /// <param name="healthCheck200Response"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, EmailJob emailJob, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, HealthCheck200Response healthCheck200Response, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (emailJob.RecipientOption.IsSet && emailJob.Recipient == null)
-                throw new ArgumentNullException(nameof(emailJob.Recipient), "Property is required for class EmailJob.");
+            if (healthCheck200Response.StatusOption.IsSet && healthCheck200Response.Status == null)
+                throw new ArgumentNullException(nameof(healthCheck200Response.Status), "Property is required for class HealthCheck200Response.");
 
-            if (emailJob.SubjectOption.IsSet && emailJob.Subject == null)
-                throw new ArgumentNullException(nameof(emailJob.Subject), "Property is required for class EmailJob.");
-
-            if (emailJob.RecipientOption.IsSet)
-                writer.WriteString("recipient", emailJob.Recipient);
-
-            if (emailJob.SubjectOption.IsSet)
-                writer.WriteString("subject", emailJob.Subject);
+            if (healthCheck200Response.StatusOption.IsSet)
+                writer.WriteString("status", healthCheck200Response.Status);
         }
     }
 }

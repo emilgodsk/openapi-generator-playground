@@ -21,33 +21,33 @@ using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
-using MyPackageServer.Common;
+using MyPackageClient.Common;
 
-namespace MyPackageServer.Models
+namespace MyPackageClient.Models
 {
     /// <summary>
-    /// WebhookTarget
+    /// EmailTarget
     /// </summary>
-    public partial class WebhookTarget : IValidatableObject
+    public partial class EmailTarget : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebhookTarget" /> class.
+        /// Initializes a new instance of the <see cref="EmailTarget" /> class.
         /// </summary>
-        /// <param name="url">url</param>
+        /// <param name="email">email</param>
         [JsonConstructor]
-        public WebhookTarget(string url)
+        public EmailTarget(string email)
         {
-            Url = url;
+            Email = email;
             OnCreated();
         }
 
         partial void OnCreated();
 
         /// <summary>
-        /// Gets or Sets Url
+        /// Gets or Sets Email
         /// </summary>
-        [JsonPropertyName("url")]
-        public string Url { get; set; }
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -56,8 +56,8 @@ namespace MyPackageServer.Models
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class WebhookTarget {\n");
-            sb.Append("  Url: ").Append(Url).Append("\n");
+            sb.Append("class EmailTarget {\n");
+            sb.Append("  Email: ").Append(Email).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -74,19 +74,19 @@ namespace MyPackageServer.Models
     }
 
     /// <summary>
-    /// A Json converter for type <see cref="WebhookTarget" />
+    /// A Json converter for type <see cref="EmailTarget" />
     /// </summary>
-    public class WebhookTargetJsonConverter : JsonConverter<WebhookTarget>
+    public class EmailTargetJsonConverter : JsonConverter<EmailTarget>
     {
         /// <summary>
-        /// Deserializes json to <see cref="WebhookTarget" />
+        /// Deserializes json to <see cref="EmailTarget" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override WebhookTarget Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override EmailTarget Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -95,7 +95,7 @@ namespace MyPackageServer.Models
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> url = default;
+            Option<string?> email = default;
 
             while (utf8JsonReader.Read())
             {
@@ -112,8 +112,8 @@ namespace MyPackageServer.Models
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "url":
-                            url = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "email":
+                            email = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         default:
                             break;
@@ -121,43 +121,43 @@ namespace MyPackageServer.Models
                 }
             }
 
-            if (!url.IsSet)
-                throw new ArgumentException("Property is required for class WebhookTarget.", nameof(url));
+            if (!email.IsSet)
+                throw new ArgumentException("Property is required for class EmailTarget.", nameof(email));
 
-            if (url.IsSet && url.Value == null)
-                throw new ArgumentNullException(nameof(url), "Property is not nullable for class WebhookTarget.");
+            if (email.IsSet && email.Value == null)
+                throw new ArgumentNullException(nameof(email), "Property is not nullable for class EmailTarget.");
 
-            return new WebhookTarget(url.Value!);
+            return new EmailTarget(email.Value!);
         }
 
         /// <summary>
-        /// Serializes a <see cref="WebhookTarget" />
+        /// Serializes a <see cref="EmailTarget" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="webhookTarget"></param>
+        /// <param name="emailTarget"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, WebhookTarget webhookTarget, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, EmailTarget emailTarget, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, webhookTarget, jsonSerializerOptions);
+            WriteProperties(writer, emailTarget, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="WebhookTarget" />
+        /// Serializes the properties of <see cref="EmailTarget" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="webhookTarget"></param>
+        /// <param name="emailTarget"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, WebhookTarget webhookTarget, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, EmailTarget emailTarget, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (webhookTarget.Url == null)
-                throw new ArgumentNullException(nameof(webhookTarget.Url), "Property is required for class WebhookTarget.");
+            if (emailTarget.Email == null)
+                throw new ArgumentNullException(nameof(emailTarget.Email), "Property is required for class EmailTarget.");
 
-            writer.WriteString("url", webhookTarget.Url);
+            writer.WriteString("email", emailTarget.Email);
         }
     }
 }
