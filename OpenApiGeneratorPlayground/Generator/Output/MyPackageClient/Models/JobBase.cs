@@ -38,7 +38,7 @@ namespace MyPackageClient.Models
         /// <param name="createdAt">createdAt</param>
         /// <param name="completedAt">completedAt</param>
         [JsonConstructor]
-        public JobBase(Guid id, string type, JobStatus status, DateTime createdAt, Option<DateTime?> completedAt = default)
+        public JobBase(Guid id, string type, JobStatus status, DateTimeOffset createdAt, Option<DateTimeOffset?> completedAt = default)
         {
             Id = id;
             Type = type;
@@ -72,20 +72,20 @@ namespace MyPackageClient.Models
         /// Gets or Sets CreatedAt
         /// </summary>
         [JsonPropertyName("createdAt")]
-        public DateTime CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         /// <summary>
         /// Used to track the state of CompletedAt
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<DateTime?> CompletedAtOption { get; private set; }
+        public Option<DateTimeOffset?> CompletedAtOption { get; private set; }
 
         /// <summary>
         /// Gets or Sets CompletedAt
         /// </summary>
         [JsonPropertyName("completedAt")]
-        public DateTime? CompletedAt { get { return this.CompletedAtOption; } set { this.CompletedAtOption = new(value); } }
+        public DateTimeOffset? CompletedAt { get { return this.CompletedAtOption; } set { this.CompletedAtOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -140,8 +140,8 @@ namespace MyPackageClient.Models
             Option<Guid?> id = default;
             Option<string?> type = default;
             Option<JobStatus?> status = default;
-            Option<DateTime?> createdAt = default;
-            Option<DateTime?> completedAt = default;
+            Option<DateTimeOffset?> createdAt = default;
+            Option<DateTimeOffset?> completedAt = default;
 
             while (utf8JsonReader.Read())
             {
@@ -170,10 +170,10 @@ namespace MyPackageClient.Models
                                 status = new Option<JobStatus?>(JobStatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
                         case "createdAt":
-                            createdAt = new Option<DateTime?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
+                            createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         case "completedAt":
-                            completedAt = new Option<DateTime?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
+                            completedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
