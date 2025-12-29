@@ -16,3 +16,11 @@ Then you can specify via the `-t` argument the path to the templates when genera
 You only have to override the templates you want to change.
 
 It generates a lot of useless files. Most of them can be ignored via the .openapi-generator-ignore file. However, some files cannot be ignored that way, so I am deleting those in the generate.sh script after generation.
+
+When introducing this with a editorconfig project, you might want to use the following:
+```code
+[*/Output/**/*.cs]
+generated_code = true
+```
+
+or add a .editorconfig to the generated code output.
