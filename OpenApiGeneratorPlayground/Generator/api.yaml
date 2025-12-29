@@ -1,0 +1,280 @@
+openapi: 3.0.3
+info:
+  title: Job Processing API
+  version: 1.0.0
+  description: API for submitting and tracking background jobs.
+
+servers:
+  - url: https://api.example.com
+
+tags:
+  - name: Jobs
+    description: Operations for creating and querying jobs
+  - name: Health
+    description: Service health and diagnostics
+
+paths:
+  /jobs:
+    post:
+      tags: [Jobs]
+      summary: Submit a job
+      operationId: submitJob
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/JobCreated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+    get:
+      tags: [Jobs]
+      summary: List jobs
+      operationId: listJobs
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: List of jobs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+
+  /jobs/{jobId}:
+    get:
+      tags: [Jobs]
+      summary: Get job by ID
+      operationId: getJob
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: Job details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
+components:
+  ########################################
+  # Parameters
+  ########################################
+  parameters:
+    JobId:
+      name: jobId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+
+    Offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+
+  ########################################
+  # Responses
+  ########################################
+  responses:
+    JobCreated:
+      description: Job created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Job'
+
+    BadRequest:
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  ########################################
+  # Schemas
+  ########################################
+  schemas:
+    ####################################
+    # Common
+    ####################################
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+
+    JobStatus:
+      type: string
+      enum: [queued, running, completed, failed]
+
+    ####################################
+    # Polymorphic Job Request (oneOf)
+    ####################################
+    JobRequest:
+      oneOf:
+        - $ref: '#/components/schemas/EmailJobRequest'
+        - $ref: '#/components/schemas/DataExportJobRequest'
+      discriminator:
+        propertyName: type
+        mapping:
+          email: '#/components/schemas/EmailJobRequest'
+          dataExport: '#/components/schemas/DataExportJobRequest'
+
+    EmailJobRequest:
+      type: object
+      required: [type, recipient, subject]
+      properties:
+        type:
+          type: string
+          enum: [email]
+        recipient:
+          type: string
+          format: email
+        subject:
+          type: string
+        body:
+          type: string
+
+    DataExportJobRequest:
+      type: object
+      required: [type, format]
+      properties:
+        type:
+          type: string
+          enum: [dataExport]
+        format:
+          type: string
+          enum: [csv, json]
+        includeMetadata:
+          type: boolean
+          default: false
+
+    ####################################
+    # Polymorphic Job Response (allOf + oneOf)
+    ####################################
+    Job:
+      allOf:
+        - $ref: '#/components/schemas/JobBase'
+        - oneOf:
+            - $ref: '#/components/schemas/EmailJob'
+            - $ref: '#/components/schemas/DataExportJob'
+      discriminator:
+        propertyName: type
+        mapping:
+          email: '#/components/schemas/EmailJob'
+          dataExport: '#/components/schemas/DataExportJob'
+
+    JobBase:
+      type: object
+      required: [id, type, status, createdAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        status:
+          $ref: '#/components/schemas/JobStatus'
+        createdAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    EmailJob:
+      type: object
+      properties:
+        recipient:
+          type: string
+          format: email
+        subject:
+          type: string
+
+    DataExportJob:
+      type: object
+      properties:
+        format:
+          type: string
+          enum: [csv, json]
+        downloadUrl:
+          type: string
+          format: uri
+
+    ####################################
+    # anyOf example
+    ####################################
+    NotificationTarget:
+      anyOf:
+        - $ref: '#/components/schemas/EmailTarget'
+        - $ref: '#/components/schemas/WebhookTarget'
+
+    EmailTarget:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+
+    WebhookTarget:
+      type: object
+      required: [url]
+      properties:
+        url:
+          type: string
+          format: uri

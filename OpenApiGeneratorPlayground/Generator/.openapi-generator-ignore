@@ -1,0 +1,19 @@
+# OpenAPI Generator Ignore
+docs/**
+*.Test/**
+api/**
+.openapi-generator/FILES
+.openapi-generator/VERSION
+
+appveyor.yml
+*.sln
+**/.gitignore
+**/*.nuspec
+README.md
+.gitignore
+
+.DS_Store
+**/README.md
+**/*.csproj
+build.bat
+build.sh
