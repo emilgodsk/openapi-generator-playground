@@ -121,7 +121,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<FormatEnum?> FormatOption { get; private set; }
+        private Option<FormatEnum?> FormatOption { get; set; }
 
         /// <summary>
         /// Gets or Sets Format
@@ -134,7 +134,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> DownloadUrlOption { get; private set; }
+        private Option<string?> DownloadUrlOption { get; set; }
 
         /// <summary>
         /// Gets or Sets DownloadUrl
@@ -155,8 +155,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="DataExportJob" />
@@ -253,5 +251,5 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             if (dataExportJob.DownloadUrlOption.IsSet)
                 writer.WriteString("downloadUrl", dataExportJob.DownloadUrl);
         }
-    }
+    }    }
 }

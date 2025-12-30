@@ -135,8 +135,6 @@ namespace MyPackageServer.Another.Test
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="JobRequest" />
@@ -274,5 +272,5 @@ namespace MyPackageServer.Another.Test
         {
 
         }
-    }
+    }    }
 }

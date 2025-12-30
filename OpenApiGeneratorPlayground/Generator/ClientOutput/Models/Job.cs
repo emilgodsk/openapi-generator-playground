@@ -140,7 +140,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<FormatEnum?> FormatOption { get; private set; }
+        private Option<FormatEnum?> FormatOption { get; set; }
 
         /// <summary>
         /// Gets or Sets Format
@@ -172,7 +172,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<DateTimeOffset?> CompletedAtOption { get; private set; }
+        private Option<DateTimeOffset?> CompletedAtOption { get; set; }
 
         /// <summary>
         /// Gets or Sets CompletedAt
@@ -185,7 +185,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> RecipientOption { get; private set; }
+        private Option<string?> RecipientOption { get; set; }
 
         /// <summary>
         /// Gets or Sets Recipient
@@ -198,7 +198,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> SubjectOption { get; private set; }
+        private Option<string?> SubjectOption { get; set; }
 
         /// <summary>
         /// Gets or Sets Subject
@@ -211,7 +211,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> DownloadUrlOption { get; private set; }
+        private Option<string?> DownloadUrlOption { get; set; }
 
         /// <summary>
         /// Gets or Sets DownloadUrl
@@ -238,8 +238,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="Job" />
@@ -433,5 +431,5 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             if (job.DownloadUrlOption.IsSet)
                 writer.WriteString("downloadUrl", job.DownloadUrl);
         }
-    }
+    }    }
 }

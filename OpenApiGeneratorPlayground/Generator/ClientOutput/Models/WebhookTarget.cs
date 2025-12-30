@@ -66,8 +66,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="WebhookTarget" />
@@ -155,5 +153,5 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
 
             writer.WriteString("url", webhookTarget.Url);
         }
-    }
+    }    }
 }

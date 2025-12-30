@@ -53,7 +53,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> StatusOption { get; private set; }
+        private Option<string?> StatusOption { get; set; }
 
         /// <summary>
         /// Gets or Sets Status
@@ -74,8 +74,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="HealthCheck200Response" />
@@ -161,5 +159,5 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             if (healthCheck200Response.StatusOption.IsSet)
                 writer.WriteString("status", healthCheck200Response.Status);
         }
-    }
+    }    }
 }

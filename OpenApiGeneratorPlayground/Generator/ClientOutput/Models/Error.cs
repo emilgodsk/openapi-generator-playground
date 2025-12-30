@@ -69,7 +69,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<Dictionary<string, Object>?> DetailsOption { get; private set; }
+        private Option<Dictionary<string, Object>?> DetailsOption { get; set; }
 
         /// <summary>
         /// Gets or Sets Details
@@ -91,8 +91,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="Error" />
@@ -211,5 +209,5 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
                 JsonSerializer.Serialize(writer, error.Details, jsonSerializerOptions);
             }
         }
-    }
+    }    }
 }

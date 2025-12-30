@@ -129,7 +129,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> BodyOption { get; private set; }
+        private Option<string?> BodyOption { get; set; }
 
         /// <summary>
         /// Gets or Sets Body
@@ -152,8 +152,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="EmailJobRequest" />
@@ -283,5 +281,5 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             if (emailJobRequest.BodyOption.IsSet)
                 writer.WriteString("body", emailJobRequest.Body);
         }
-    }
+    }    }
 }

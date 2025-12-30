@@ -187,7 +187,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<bool?> IncludeMetadataOption { get; private set; }
+        private Option<bool?> IncludeMetadataOption { get; set; }
 
         /// <summary>
         /// Gets or Sets IncludeMetadata
@@ -209,8 +209,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="DataExportJobRequest" />
@@ -321,5 +319,5 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             if (dataExportJobRequest.IncludeMetadataOption.IsSet)
                 writer.WriteBoolean("includeMetadata", dataExportJobRequest.IncludeMetadataOption.Value!.Value);
         }
-    }
+    }    }
 }

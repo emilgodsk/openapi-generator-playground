@@ -85,7 +85,7 @@ namespace MyPackageServer.Another.Test
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<DateTimeOffset?> CompletedAtOption { get; private set; }
+        private Option<DateTimeOffset?> CompletedAtOption { get; set; }
 
         /// <summary>
         /// Gets or Sets CompletedAt
@@ -109,8 +109,6 @@ namespace MyPackageServer.Another.Test
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="JobBase" />
@@ -257,5 +255,5 @@ namespace MyPackageServer.Another.Test
                 else
                     writer.WriteNull("completedAt");
         }
-    }
+    }    }
 }

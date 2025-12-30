@@ -54,7 +54,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<EmailTarget?> EmailTargetOption { get; private set; }
+        private Option<EmailTarget?> EmailTargetOption { get; set; }
 
         /// <summary>
         /// Gets or Sets EmailTarget
@@ -66,7 +66,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<WebhookTarget?> WebhookTargetOption { get; private set; }
+        private Option<WebhookTarget?> WebhookTargetOption { get; set; }
 
         /// <summary>
         /// Gets or Sets WebhookTarget
@@ -84,8 +84,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="NotificationTarget" />
@@ -200,5 +198,5 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         {
 
         }
-    }
+    }    }
 }

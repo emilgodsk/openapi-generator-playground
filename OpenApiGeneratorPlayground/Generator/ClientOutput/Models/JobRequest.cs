@@ -135,8 +135,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="JobRequest" />
@@ -274,5 +272,5 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         {
 
         }
-    }
+    }    }
 }

@@ -55,7 +55,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> RecipientOption { get; private set; }
+        private Option<string?> RecipientOption { get; set; }
 
         /// <summary>
         /// Gets or Sets Recipient
@@ -68,7 +68,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> SubjectOption { get; private set; }
+        private Option<string?> SubjectOption { get; set; }
 
         /// <summary>
         /// Gets or Sets Subject
@@ -89,8 +89,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="EmailJob" />
@@ -189,5 +187,5 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             if (emailJob.SubjectOption.IsSet)
                 writer.WriteString("subject", emailJob.Subject);
         }
-    }
+    }    }
 }

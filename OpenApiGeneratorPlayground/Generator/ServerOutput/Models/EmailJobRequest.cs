@@ -129,7 +129,7 @@ namespace MyPackageServer.Another.Test
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> BodyOption { get; private set; }
+        private Option<string?> BodyOption { get; set; }
 
         /// <summary>
         /// Gets or Sets Body
@@ -152,8 +152,6 @@ namespace MyPackageServer.Another.Test
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
 
     /// <summary>
     /// A Json converter for type <see cref="EmailJobRequest" />
@@ -283,5 +281,5 @@ namespace MyPackageServer.Another.Test
             if (emailJobRequest.BodyOption.IsSet)
                 writer.WriteString("body", emailJobRequest.Body);
         }
-    }
+    }    }
 }
