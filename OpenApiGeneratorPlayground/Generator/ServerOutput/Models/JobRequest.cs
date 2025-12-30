@@ -247,13 +247,13 @@ namespace MyPackageServer.Another.Test
 
                 if (jobRequest.EmailJobRequest != null)
                 {
-                    EmailJobRequestJsonConverter emailJobRequestJsonConverter = (EmailJobRequestJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(jobRequest.EmailJobRequest.GetType()));
+                    EmailJobRequest.EmailJobRequestJsonConverter emailJobRequestJsonConverter = (EmailJobRequest.EmailJobRequestJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(jobRequest.EmailJobRequest.GetType()));
                     emailJobRequestJsonConverter.WriteProperties(writer, jobRequest.EmailJobRequest, jsonSerializerOptions);
                 }
 
                 if (jobRequest.DataExportJobRequest != null)
                 {
-                    DataExportJobRequestJsonConverter dataExportJobRequestJsonConverter = (DataExportJobRequestJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(jobRequest.DataExportJobRequest.GetType()));
+                    DataExportJobRequest.DataExportJobRequestJsonConverter dataExportJobRequestJsonConverter = (DataExportJobRequest.DataExportJobRequestJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(jobRequest.DataExportJobRequest.GetType()));
                     dataExportJobRequestJsonConverter.WriteProperties(writer, jobRequest.DataExportJobRequest, jsonSerializerOptions);
                 }
 

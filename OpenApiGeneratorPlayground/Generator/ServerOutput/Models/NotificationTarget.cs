@@ -173,13 +173,13 @@ namespace MyPackageServer.Another.Test
 
                 if (notificationTarget.EmailTargetOption.IsSet && notificationTarget.EmailTargetOption.Value != null)
                 {
-                    EmailTargetJsonConverter emailTargetJsonConverter = (EmailTargetJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(notificationTarget.EmailTargetOption.Value.GetType()));
+                    EmailTarget.EmailTargetJsonConverter emailTargetJsonConverter = (EmailTarget.EmailTargetJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(notificationTarget.EmailTargetOption.Value.GetType()));
                     emailTargetJsonConverter.WriteProperties(writer, notificationTarget.EmailTargetOption.Value, jsonSerializerOptions);
                 }
 
                 if (notificationTarget.WebhookTargetOption.IsSet && notificationTarget.WebhookTargetOption.Value != null)
                 {
-                    WebhookTargetJsonConverter webhookTargetJsonConverter = (WebhookTargetJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(notificationTarget.WebhookTargetOption.Value.GetType()));
+                    WebhookTarget.WebhookTargetJsonConverter webhookTargetJsonConverter = (WebhookTarget.WebhookTargetJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(notificationTarget.WebhookTargetOption.Value.GetType()));
                     webhookTargetJsonConverter.WriteProperties(writer, notificationTarget.WebhookTargetOption.Value, jsonSerializerOptions);
                 }
 

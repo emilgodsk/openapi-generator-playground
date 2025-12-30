@@ -83,7 +83,9 @@ if [ "$TYPE_OF_GENERATION" = "server" ] || [ "$TYPE_OF_GENERATION" = "both" ]; t
 echo " - Generating the models for the server..."
 
 MODEL_PACKAGE=Models
+SERVER_MODEL_PACKAGE=Models
 if [ "$6" = "--move-models-to-base-package" ] || [ "$8" = "--use-namespace-for-models" ]; then
+  SERVER_MODEL_PACKAGE=$SERVER_PACKAGE
   MODEL_PACKAGE="${SERVER_PACKAGE##*.}"
   SERVER_PACKAGE="${SERVER_PACKAGE%.*}"
 fi
@@ -106,7 +108,7 @@ echo " - Generating the server code..."
   -g aspnetcore \
   -o $OUTPUT_FOLDER \
   -t ./Templates/aspnetcore \
-  --additional-properties=sourceFolder=./,packageName=$SERVER_PACKAGE,buildTarget=library,useNewtonsoft=false,useSwashbuckle=false,nullableReferenceTypes=true,isLibrary=true,pocoModels=true,useSeparateModelProject=true \
+  --additional-properties=sourceFolder=./,packageName=$SERVER_PACKAGE,buildTarget=library,useNewtonsoft=false,useSwashbuckle=false,nullableReferenceTypes=true,isLibrary=true,pocoModels=true,useSeparateModelProject=true,modelPackage=$SERVER_MODEL_PACKAGE \
   2>&1 1>/dev/null) | cat
 
 echo " - Cleaning up generated files..."

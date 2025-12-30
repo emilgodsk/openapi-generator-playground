@@ -50,7 +50,7 @@ namespace {{packageName}}.{{clientPackage}}
             _jsonOptions.Converters.Add(new {{datatypeWithEnum}}{{^datatypeWithEnum}}{{classname}}{{/datatypeWithEnum}}NullableJsonConverter());
             {{/isEnum}}
             {{^isEnum}}
-            _jsonOptions.Converters.Add(new {{classname}}JsonConverter());
+            _jsonOptions.Converters.Add(new {{classname}}.{{classname}}JsonConverter());
             {{/isEnum}}
             {{/model}}
             {{/models}}

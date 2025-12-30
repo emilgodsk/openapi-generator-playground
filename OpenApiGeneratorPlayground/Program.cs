@@ -5,8 +5,8 @@ var builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.AddControllers();
 
-var a = new Job();
-a.CompletedAtOption
+// var a = new Job();
+// a.CompletedAt
 
 var host = builder.Build();
 host.Run();
