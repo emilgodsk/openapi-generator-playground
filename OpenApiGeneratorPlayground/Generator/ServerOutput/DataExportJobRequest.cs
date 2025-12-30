@@ -20,9 +20,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Common;
+using MyPackageServer.Another.Common;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
+namespace MyPackageServer.Another.Test
 {
     /// <summary>
     /// DataExportJobRequest

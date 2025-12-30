@@ -17,12 +17,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Models;
+using MyPackageClient.ThisIsTest.ManyOf.Them;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("MyPackageClient.ThisIsTest.ManyOf.Them.Test")]
+[assembly: InternalsVisibleTo("MyPackageClient.ThisIsTest.ManyOf.Test")]
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.Common
+namespace MyPackageClient.ThisIsTest.ManyOf.Common
 {
     /// <summary>
     /// Utility functions providing some benefit to API client consumers.

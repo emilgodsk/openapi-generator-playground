@@ -20,9 +20,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MyPackageServer.Another.Test.Common;
+using MyPackageClient.ThisIsTest.ManyOf.Common;
 
-namespace MyPackageServer.Another.Test.Models
+namespace MyPackageClient.ThisIsTest.ManyOf.Them
 {
     /// <summary>
     /// JobBase
@@ -75,7 +75,7 @@ namespace MyPackageServer.Another.Test.Models
         /// Gets or Sets Type
         /// </summary>
         [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string Type { get; set; } = default!;
 
         /// <summary>
         /// Gets or Sets CreatedAt

@@ -20,9 +20,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Common;
+using MyPackageServer.Another.Common;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
+namespace MyPackageServer.Another.Test
 {
     /// <summary>
     /// EmailTarget
@@ -55,7 +55,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
         /// Gets or Sets Email
         /// </summary>
         [JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         /// <summary>
         /// Returns the string presentation of the object

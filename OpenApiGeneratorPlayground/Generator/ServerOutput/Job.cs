@@ -20,9 +20,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Common;
+using MyPackageServer.Another.Common;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
+namespace MyPackageServer.Another.Test
 {
     /// <summary>
     /// Job
@@ -162,7 +162,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public string Type { get; }
+        public string Type { get; } = default!;
 
         /// <summary>
         /// Gets or Sets CreatedAt

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -lt 4 ]; then
-  echo "Usage: $0 <input-spec-file> <output-folder> <client-package-name> <type-of-generation: clients|server|both> [--clear-output]"
+  echo "Usage: $0 <input-spec-file> <output-folder> <client-package-name> <type-of-generation: clients|server|both> [--clear-output] [--move-models-to-base-package] [--only-models]"
   exit 1
 fi
 
@@ -21,9 +21,9 @@ echo "Generating the OpenAPI code..."
 echo " - Using output folder: $REAL_OUTPUT_FOLDER"
 
 if [ "$CLEAR_OUTPUT" = "--clear-output" ]; then
-echo " - Resetting the output folder..."
-# Reset the folder
-rm -rf $REAL_OUTPUT_FOLDER
+  echo " - Resetting the output folder..."
+  # Reset the folder
+  rm -rf $REAL_OUTPUT_FOLDER
 fi
 
 echo " - Creating the output folder..."
@@ -36,6 +36,13 @@ cp .openapi-generator-ignore $OUTPUT_FOLDER
 
 if [ "$TYPE_OF_GENERATION" = "clients" ] || [ "$TYPE_OF_GENERATION" = "both" ]; then
 ##### CLIENT GENERATION #####
+
+MODEL_PACKAGE=Models
+if [ "$6" = "--move-models-to-base-package" ]; then
+  MODEL_PACKAGE="${CLIENT_PACKAGE##*.}"
+  CLIENT_PACKAGE="${CLIENT_PACKAGE%.*}"
+fi
+
 echo " - Generating the client code..."
 # Generate the client: all that is needed (we capture into /dev/null to avoid cluttering the output)
 (NODE_OPTIONS="--no-deprecation" openapi-generator-cli generate \
@@ -43,11 +50,24 @@ echo " - Generating the client code..."
   -g csharp \
   -o $OUTPUT_FOLDER \
   -t ./Templates/csharp \
-  --additional-properties=sourceFolder=./,packageName=$CLIENT_PACKAGE,library=generichost,targetFramework=net8.0,optionalProjectFile=false,nullableReferenceTypes=true,optionalEmitDefaultValues=true,modelPackage=Models,clientPackage=Common,apiPackage=ApiClients,validatable=false,useDateTimeOffset=true \
+  --additional-properties=sourceFolder=./,packageName=$CLIENT_PACKAGE,library=generichost,targetFramework=net8.0,optionalProjectFile=false,nullableReferenceTypes=true,optionalEmitDefaultValues=true,modelPackage=$MODEL_PACKAGE,clientPackage=Common,apiPackage=ApiClients,validatable=false,useDateTimeOffset=true \
   2>&1 1>/dev/null) | cat
 
 echo " - Cleaning up generated files..."
 rm -rf $OUTPUT_FOLDER/$CLIENT_PACKAGE/Extensions #Extension methods not very valuable
+
+if [ "$6" = "--move-models-to-base-package" ]; then
+  echo " - Moving models to base package..."
+  mv $OUTPUT_FOLDER/$CLIENT_PACKAGE/$MODEL_PACKAGE/* $OUTPUT_FOLDER/$CLIENT_PACKAGE/
+  rm -d $OUTPUT_FOLDER/$CLIENT_PACKAGE/$MODEL_PACKAGE
+fi
+
+if [ "$7" = "--only-models" ]; then
+  echo " - Removing non-model files..."
+  rm -rf $OUTPUT_FOLDER/$CLIENT_PACKAGE/Common/ApiFactory.cs
+  rm -rf $OUTPUT_FOLDER/$CLIENT_PACKAGE/Common/HostConfiguration.cs
+  rm -rf $OUTPUT_FOLDER/$CLIENT_PACKAGE/ApiClients
+fi
 
 mv $OUTPUT_FOLDER/$CLIENT_PACKAGE/* $REAL_OUTPUT_FOLDER/
 
@@ -56,6 +76,13 @@ fi
 if [ "$TYPE_OF_GENERATION" = "server" ] || [ "$TYPE_OF_GENERATION" = "both" ]; then
 ##### SERVER GENERATION #####
 echo " - Generating the models for the server..."
+
+MODEL_PACKAGE=Models
+if [ "$6" = "--move-models-to-base-package" ]; then
+  MODEL_PACKAGE="${SERVER_PACKAGE##*.}"
+  SERVER_PACKAGE="${SERVER_PACKAGE%.*}"
+fi
+
 # To generate the server: we need to use aspnetcore generator + the csharp models
 # This generates the models from the csharp generator
 # (we capture into /dev/null to avoid cluttering the output)
@@ -64,7 +91,7 @@ echo " - Generating the models for the server..."
   -g csharp \
   -o $OUTPUT_FOLDER \
   -t ./Templates/csharp \
-  --additional-properties=sourceFolder=./,packageName=$SERVER_PACKAGE,library=generichost,targetFramework=net8.0,optionalProjectFile=false,nullableReferenceTypes=true,optionalEmitDefaultValues=true,modelPackage=Models,clientPackage=Common,apiPackage=ApiClients,validatable=false,useDateTimeOffset=true \
+  --additional-properties=sourceFolder=./,packageName=$SERVER_PACKAGE,library=generichost,targetFramework=net8.0,optionalProjectFile=false,nullableReferenceTypes=true,optionalEmitDefaultValues=true,modelPackage=$MODEL_PACKAGE,clientPackage=Common,apiPackage=ApiClients,validatable=false,useDateTimeOffset=true \
   2>&1 1>/dev/null) | cat
 
 echo " - Generating the server code..."
@@ -87,6 +114,17 @@ rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Authentication #OpenAPI Authentication not
 rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Formatters #InputFormatterStream unused
 rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Attributes #ValidateModelStateAttribute unused
 rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Extensions #Extension methods not very valuable
+
+if [ "$6" = "--move-models-to-base-package" ]; then
+    echo " - Moving models to base package..."
+    mv $OUTPUT_FOLDER/$SERVER_PACKAGE/$MODEL_PACKAGE/* $OUTPUT_FOLDER/$SERVER_PACKAGE/
+    rm -d $OUTPUT_FOLDER/$SERVER_PACKAGE/$MODEL_PACKAGE
+fi
+
+if [ "$7" = "--only-models" ]; then
+  echo " - Removing non-model files..."
+  rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Controllers
+fi
 
 mv $OUTPUT_FOLDER/$SERVER_PACKAGE/* $REAL_OUTPUT_FOLDER/
 

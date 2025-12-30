@@ -20,9 +20,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Common;
+using MyPackageClient.ThisIsTest.ManyOf.Common;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
+namespace MyPackageClient.ThisIsTest.ManyOf.Them
 {
     /// <summary>
     /// EmailJobRequest
@@ -119,13 +119,13 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
         /// Gets or Sets Recipient
         /// </summary>
         [JsonPropertyName("recipient")]
-        public string Recipient { get; set; }
+        public string Recipient { get; set; } = default!;
 
         /// <summary>
         /// Gets or Sets Subject
         /// </summary>
         [JsonPropertyName("subject")]
-        public string Subject { get; set; }
+        public string Subject { get; set; } = default!;
 
         /// <summary>
         /// Used to track the state of Body

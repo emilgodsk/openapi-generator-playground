@@ -20,9 +20,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Common;
+using MyPackageServer.Another.Common;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
+namespace MyPackageServer.Another.Test
 {
     /// <summary>
     /// Error
@@ -59,13 +59,13 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
         /// Gets or Sets Code
         /// </summary>
         [JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string Code { get; set; } = default!;
 
         /// <summary>
         /// Gets or Sets Message
         /// </summary>
         [JsonPropertyName("message")]
-        public string Message { get; set; }
+        public string Message { get; set; } = default!;
 
         /// <summary>
         /// Used to track the state of Details
