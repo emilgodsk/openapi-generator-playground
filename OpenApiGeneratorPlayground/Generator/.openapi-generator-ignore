@@ -2,7 +2,6 @@
 
 # Exclude test files and folders & docs & api files
 docs/**
-*.Test/**
 api/**
 .openapi-generator/FILES
 .openapi-generator/VERSION

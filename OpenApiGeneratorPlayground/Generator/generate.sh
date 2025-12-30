@@ -7,7 +7,8 @@ fi
 
 # setopt extendedglob
 
-OUTPUT_FOLDER=$2
+OUTPUT_FOLDER=$2/tmp
+REAL_OUTPUT_FOLDER=$2
 PACKAGE_NAME=$3
 CLIENT_PACKAGE=$PACKAGE_NAME
 SERVER_PACKAGE=$PACKAGE_NAME
@@ -17,12 +18,12 @@ CLEAR_OUTPUT=$5
 
 echo "Generating the OpenAPI code..."
 
-echo " - Using output folder: $OUTPUT_FOLDER"
+echo " - Using output folder: $REAL_OUTPUT_FOLDER"
 
 if [ "$CLEAR_OUTPUT" = "--clear-output" ]; then
 echo " - Resetting the output folder..."
 # Reset the folder
-rm -rf $OUTPUT_FOLDER
+rm -rf $REAL_OUTPUT_FOLDER
 fi
 
 echo " - Creating the output folder..."
@@ -47,6 +48,9 @@ echo " - Generating the client code..."
 
 echo " - Cleaning up generated files..."
 rm -rf $OUTPUT_FOLDER/$CLIENT_PACKAGE/Extensions #Extension methods not very valuable
+
+mv $OUTPUT_FOLDER/$CLIENT_PACKAGE/* $REAL_OUTPUT_FOLDER/
+
 fi
 
 if [ "$TYPE_OF_GENERATION" = "server" ] || [ "$TYPE_OF_GENERATION" = "both" ]; then
@@ -83,13 +87,17 @@ rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Authentication #OpenAPI Authentication not
 rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Formatters #InputFormatterStream unused
 rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Attributes #ValidateModelStateAttribute unused
 rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Extensions #Extension methods not very valuable
+
+mv $OUTPUT_FOLDER/$SERVER_PACKAGE/* $REAL_OUTPUT_FOLDER/
+
 fi
 
 #### CLEANUP GENERATED FILES #####
 echo " - Cleaning up extra generated files..."
 
 # Clean up unnecessary files
-rm -rf $OUTPUT_FOLDER/.openapi-generator
-rm $OUTPUT_FOLDER/.openapi-generator-ignore
+#rm -rf $REAL_OUTPUT_FOLDER/.openapi-generator
+
+rm -rf $OUTPUT_FOLDER
 
 echo "[✓] OpenAPI code generation completed."
