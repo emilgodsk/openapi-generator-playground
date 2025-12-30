@@ -1,8 +1,8 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients;
+using MyPackageClient.ThisIsTest.ManyOf.ApiClients;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.Common
+namespace MyPackageClient.ThisIsTest.ManyOf.Common
 {
     /// <summary>
     /// An IApiFactory interface

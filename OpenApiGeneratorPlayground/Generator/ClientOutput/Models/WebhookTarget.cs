@@ -20,9 +20,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Common;
+using MyPackageClient.ThisIsTest.ManyOf.Common;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
+namespace MyPackageClient.ThisIsTest.ManyOf.Them
 {
     /// <summary>
     /// WebhookTarget

@@ -11,7 +11,7 @@
 #nullable enable
 
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.Common
+namespace MyPackageClient.ThisIsTest.ManyOf.Common
 {
     /// <summary>
     /// A wrapper for operation parameters which are not required

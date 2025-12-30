@@ -5,7 +5,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace MyPackageServer.Another.Test.Common
+namespace MyPackageServer.Another.Common
 {
     /// <summary>
     /// A container for a collection of tokens.

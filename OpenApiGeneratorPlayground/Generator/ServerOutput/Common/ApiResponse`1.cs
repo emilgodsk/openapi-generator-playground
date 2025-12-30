@@ -14,7 +14,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
-namespace MyPackageServer.Another.Test.Common
+namespace MyPackageServer.Another.Common
 {
     /// <summary>
     /// Provides a non-generic contract for the ApiResponse wrapper.

@@ -1,6 +1,6 @@
 using System.Net.Http;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
+namespace MyPackageClient.ThisIsTest.ManyOf.ApiClients
 {
     /// <summary>
     /// Any Api client

@@ -11,7 +11,7 @@
 #nullable enable
 
 
-namespace MyPackageServer.Another.Test.Common
+namespace MyPackageServer.Another.Common
 {
     /// <summary>
     /// A wrapper for operation parameters which are not required

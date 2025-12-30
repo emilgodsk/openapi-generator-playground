@@ -16,13 +16,13 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
-using MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Models;
+using MyPackageClient.ThisIsTest.ManyOf.ApiClients;
+using MyPackageClient.ThisIsTest.ManyOf.Them;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.Common
+namespace MyPackageClient.ThisIsTest.ManyOf.Common
 {
     /// <summary>
-    /// Provides hosting configuration for MyPackageClient.ThisIsTest.ManyOf.Them
+    /// Provides hosting configuration for MyPackageClient.ThisIsTest.ManyOf
     /// </summary>
     public class HostConfiguration
     {

@@ -14,9 +14,9 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using MyPackageServer.Another.Test.Models;
+using MyPackageServer.Another.Models;
 
-namespace MyPackageServer.Another.Test.Controllers
+namespace MyPackageServer.Another.Controllers
 { 
     /// <summary>
     /// 

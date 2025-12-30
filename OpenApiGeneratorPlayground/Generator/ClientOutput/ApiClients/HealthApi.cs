@@ -18,11 +18,11 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Common;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Models;
+using MyPackageClient.ThisIsTest.ManyOf.Common;
+using MyPackageClient.ThisIsTest.ManyOf.Them;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
+namespace MyPackageClient.ThisIsTest.ManyOf.ApiClients
 {
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
@@ -55,7 +55,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
     /// <summary>
     /// The <see cref="IHealthCheckApiResponse"/>
     /// </summary>
-    public interface IHealthCheckApiResponse : MyPackageClient.ThisIsTest.ManyOf.Them.Common.IApiResponse, IOk<MyPackageClient.ThisIsTest.ManyOf.Them.Models.HealthCheck200Response?>
+    public interface IHealthCheckApiResponse : MyPackageClient.ThisIsTest.ManyOf.Common.IApiResponse, IOk<MyPackageClient.ThisIsTest.ManyOf.Them.HealthCheck200Response?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -165,7 +165,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         /// <summary>
         /// The <see cref="HealthCheckApiResponse"/>
         /// </summary>
-        public partial class HealthCheckApiResponse : MyPackageClient.ThisIsTest.ManyOf.Them.Common.ApiResponse, IHealthCheckApiResponse
+        public partial class HealthCheckApiResponse : MyPackageClient.ThisIsTest.ManyOf.Common.ApiResponse, IHealthCheckApiResponse
         {
             /// <summary>
             /// The <see cref="HealthCheckApiResponse"/>
@@ -203,11 +203,11 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// Deserializes the response if the response is 200 Ok
             /// </summary>
             /// <returns></returns>
-            public MyPackageClient.ThisIsTest.ManyOf.Them.Models.HealthCheck200Response? Ok()
+            public MyPackageClient.ThisIsTest.ManyOf.Them.HealthCheck200Response? Ok()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsOk
-                    ? System.Text.Json.JsonSerializer.Deserialize<MyPackageClient.ThisIsTest.ManyOf.Them.Models.HealthCheck200Response>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<MyPackageClient.ThisIsTest.ManyOf.Them.HealthCheck200Response>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -216,7 +216,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)]out MyPackageClient.ThisIsTest.ManyOf.Them.Models.HealthCheck200Response? result)
+            public bool TryOk([NotNullWhen(true)]out MyPackageClient.ThisIsTest.ManyOf.Them.HealthCheck200Response? result)
             {
                 result = null;
 

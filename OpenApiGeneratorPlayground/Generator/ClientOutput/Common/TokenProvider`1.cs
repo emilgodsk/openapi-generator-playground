@@ -13,9 +13,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Common;
+using MyPackageClient.ThisIsTest.ManyOf.Common;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them
+namespace MyPackageClient.ThisIsTest.ManyOf
 {
     /// <summary>
     /// A class which will provide tokens.

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -lt 4 ]; then
-  echo "Usage: $0 <input-spec-file> <output-folder> <client-package-name> <type-of-generation: clients|server|both> [--clear-output] [--move-models-to-base-package] [--only-models]"
+  echo "Usage: $0 <input-spec-file> <output-folder> <client-package-name> <type-of-generation: clients|server|both> [--clear-output] [--move-models-to-base-package] [--only-models] [--use-namespace-for-models]"
   exit 1
 fi
 
@@ -38,7 +38,7 @@ if [ "$TYPE_OF_GENERATION" = "clients" ] || [ "$TYPE_OF_GENERATION" = "both" ]; 
 ##### CLIENT GENERATION #####
 
 MODEL_PACKAGE=Models
-if [ "$6" = "--move-models-to-base-package" ]; then
+if [ "$6" = "--move-models-to-base-package" ] || [ "$8" = "--use-namespace-for-models" ]; then
   MODEL_PACKAGE="${CLIENT_PACKAGE##*.}"
   CLIENT_PACKAGE="${CLIENT_PACKAGE%.*}"
 fi
@@ -55,6 +55,11 @@ echo " - Generating the client code..."
 
 echo " - Cleaning up generated files..."
 rm -rf $OUTPUT_FOLDER/$CLIENT_PACKAGE/Extensions #Extension methods not very valuable
+
+if [ "$8" = "--use-namespace-for-models" ]; then
+  echo " - Adjusting namespaces for models..."
+  mv $OUTPUT_FOLDER/$CLIENT_PACKAGE/$MODEL_PACKAGE $OUTPUT_FOLDER/$CLIENT_PACKAGE/Models
+fi
 
 if [ "$6" = "--move-models-to-base-package" ]; then
   echo " - Moving models to base package..."
@@ -78,7 +83,7 @@ if [ "$TYPE_OF_GENERATION" = "server" ] || [ "$TYPE_OF_GENERATION" = "both" ]; t
 echo " - Generating the models for the server..."
 
 MODEL_PACKAGE=Models
-if [ "$6" = "--move-models-to-base-package" ]; then
+if [ "$6" = "--move-models-to-base-package" ] || [ "$8" = "--use-namespace-for-models" ]; then
   MODEL_PACKAGE="${SERVER_PACKAGE##*.}"
   SERVER_PACKAGE="${SERVER_PACKAGE%.*}"
 fi
@@ -114,6 +119,11 @@ rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Authentication #OpenAPI Authentication not
 rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Formatters #InputFormatterStream unused
 rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Attributes #ValidateModelStateAttribute unused
 rm -rf $OUTPUT_FOLDER/$SERVER_PACKAGE/Extensions #Extension methods not very valuable
+
+if [ "$8" = "--use-namespace-for-models" ]; then
+  echo " - Adjusting namespaces for models..."
+  mv $OUTPUT_FOLDER/$SERVER_PACKAGE/$MODEL_PACKAGE $OUTPUT_FOLDER/$SERVER_PACKAGE/Models
+fi
 
 if [ "$6" = "--move-models-to-base-package" ]; then
     echo " - Moving models to base package..."

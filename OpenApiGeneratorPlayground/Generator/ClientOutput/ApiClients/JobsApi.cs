@@ -18,11 +18,11 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Common;
-using MyPackageClient.ThisIsTest.ManyOf.Them.Models;
+using MyPackageClient.ThisIsTest.ManyOf.Common;
+using MyPackageClient.ThisIsTest.ManyOf.Them;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
+namespace MyPackageClient.ThisIsTest.ManyOf.ApiClients
 {
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
@@ -105,7 +105,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
     /// <summary>
     /// The <see cref="IGetJobApiResponse"/>
     /// </summary>
-    public interface IGetJobApiResponse : MyPackageClient.ThisIsTest.ManyOf.Them.Common.IApiResponse, IOk<MyPackageClient.ThisIsTest.ManyOf.Them.Models.Job?>, INotFound<MyPackageClient.ThisIsTest.ManyOf.Them.Models.Error?>
+    public interface IGetJobApiResponse : MyPackageClient.ThisIsTest.ManyOf.Common.IApiResponse, IOk<MyPackageClient.ThisIsTest.ManyOf.Them.Job?>, INotFound<MyPackageClient.ThisIsTest.ManyOf.Them.Error?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -123,7 +123,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
     /// <summary>
     /// The <see cref="IListJobsApiResponse"/>
     /// </summary>
-    public interface IListJobsApiResponse : MyPackageClient.ThisIsTest.ManyOf.Them.Common.IApiResponse, IOk<List<Job>?>
+    public interface IListJobsApiResponse : MyPackageClient.ThisIsTest.ManyOf.Common.IApiResponse, IOk<List<Job>?>
     {
         /// <summary>
         /// Returns true if the response is 200 Ok
@@ -135,7 +135,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
     /// <summary>
     /// The <see cref="ISubmitJobApiResponse"/>
     /// </summary>
-    public interface ISubmitJobApiResponse : MyPackageClient.ThisIsTest.ManyOf.Them.Common.IApiResponse, ICreated<MyPackageClient.ThisIsTest.ManyOf.Them.Models.Job?>, IBadRequest<MyPackageClient.ThisIsTest.ManyOf.Them.Models.Error?>
+    public interface ISubmitJobApiResponse : MyPackageClient.ThisIsTest.ManyOf.Common.IApiResponse, ICreated<MyPackageClient.ThisIsTest.ManyOf.Them.Job?>, IBadRequest<MyPackageClient.ThisIsTest.ManyOf.Them.Error?>
     {
         /// <summary>
         /// Returns true if the response is 201 Created
@@ -258,7 +258,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         /// <summary>
         /// The <see cref="GetJobApiResponse"/>
         /// </summary>
-        public partial class GetJobApiResponse : MyPackageClient.ThisIsTest.ManyOf.Them.Common.ApiResponse, IGetJobApiResponse
+        public partial class GetJobApiResponse : MyPackageClient.ThisIsTest.ManyOf.Common.ApiResponse, IGetJobApiResponse
         {
             /// <summary>
             /// The <see cref="GetJobApiResponse"/>
@@ -296,11 +296,11 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// Deserializes the response if the response is 200 Ok
             /// </summary>
             /// <returns></returns>
-            public MyPackageClient.ThisIsTest.ManyOf.Them.Models.Job? Ok()
+            public MyPackageClient.ThisIsTest.ManyOf.Them.Job? Ok()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsOk
-                    ? System.Text.Json.JsonSerializer.Deserialize<MyPackageClient.ThisIsTest.ManyOf.Them.Models.Job>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<MyPackageClient.ThisIsTest.ManyOf.Them.Job>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -309,7 +309,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryOk([NotNullWhen(true)]out MyPackageClient.ThisIsTest.ManyOf.Them.Models.Job? result)
+            public bool TryOk([NotNullWhen(true)]out MyPackageClient.ThisIsTest.ManyOf.Them.Job? result)
             {
                 result = null;
 
@@ -335,11 +335,11 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// Deserializes the response if the response is 404 NotFound
             /// </summary>
             /// <returns></returns>
-            public MyPackageClient.ThisIsTest.ManyOf.Them.Models.Error? NotFound()
+            public MyPackageClient.ThisIsTest.ManyOf.Them.Error? NotFound()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsNotFound
-                    ? System.Text.Json.JsonSerializer.Deserialize<MyPackageClient.ThisIsTest.ManyOf.Them.Models.Error>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<MyPackageClient.ThisIsTest.ManyOf.Them.Error>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -348,7 +348,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryNotFound([NotNullWhen(true)]out MyPackageClient.ThisIsTest.ManyOf.Them.Models.Error? result)
+            public bool TryNotFound([NotNullWhen(true)]out MyPackageClient.ThisIsTest.ManyOf.Them.Error? result)
             {
                 result = null;
 
@@ -462,7 +462,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         /// <summary>
         /// The <see cref="ListJobsApiResponse"/>
         /// </summary>
-        public partial class ListJobsApiResponse : MyPackageClient.ThisIsTest.ManyOf.Them.Common.ApiResponse, IListJobsApiResponse
+        public partial class ListJobsApiResponse : MyPackageClient.ThisIsTest.ManyOf.Common.ApiResponse, IListJobsApiResponse
         {
             /// <summary>
             /// The <see cref="ListJobsApiResponse"/>
@@ -641,7 +641,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         /// <summary>
         /// The <see cref="SubmitJobApiResponse"/>
         /// </summary>
-        public partial class SubmitJobApiResponse : MyPackageClient.ThisIsTest.ManyOf.Them.Common.ApiResponse, ISubmitJobApiResponse
+        public partial class SubmitJobApiResponse : MyPackageClient.ThisIsTest.ManyOf.Common.ApiResponse, ISubmitJobApiResponse
         {
             /// <summary>
             /// The <see cref="SubmitJobApiResponse"/>
@@ -679,11 +679,11 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// Deserializes the response if the response is 201 Created
             /// </summary>
             /// <returns></returns>
-            public MyPackageClient.ThisIsTest.ManyOf.Them.Models.Job? Created()
+            public MyPackageClient.ThisIsTest.ManyOf.Them.Job? Created()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsCreated
-                    ? System.Text.Json.JsonSerializer.Deserialize<MyPackageClient.ThisIsTest.ManyOf.Them.Models.Job>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<MyPackageClient.ThisIsTest.ManyOf.Them.Job>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -692,7 +692,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryCreated([NotNullWhen(true)]out MyPackageClient.ThisIsTest.ManyOf.Them.Models.Job? result)
+            public bool TryCreated([NotNullWhen(true)]out MyPackageClient.ThisIsTest.ManyOf.Them.Job? result)
             {
                 result = null;
 
@@ -718,11 +718,11 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// Deserializes the response if the response is 400 BadRequest
             /// </summary>
             /// <returns></returns>
-            public MyPackageClient.ThisIsTest.ManyOf.Them.Models.Error? BadRequest()
+            public MyPackageClient.ThisIsTest.ManyOf.Them.Error? BadRequest()
             {
                 // This logic may be modified with the AsModel.mustache template
                 return IsBadRequest
-                    ? System.Text.Json.JsonSerializer.Deserialize<MyPackageClient.ThisIsTest.ManyOf.Them.Models.Error>(RawContent, _jsonSerializerOptions)
+                    ? System.Text.Json.JsonSerializer.Deserialize<MyPackageClient.ThisIsTest.ManyOf.Them.Error>(RawContent, _jsonSerializerOptions)
                     : null;
             }
 
@@ -731,7 +731,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// </summary>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool TryBadRequest([NotNullWhen(true)]out MyPackageClient.ThisIsTest.ManyOf.Them.Models.Error? result)
+            public bool TryBadRequest([NotNullWhen(true)]out MyPackageClient.ThisIsTest.ManyOf.Them.Error? result)
             {
                 result = null;
 
