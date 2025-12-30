@@ -45,15 +45,6 @@ using System.Runtime.CompilerServices;
         }
         {{/useCompareNetObjects}}
 
-        /// <summary>
-        /// A delegate for events.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        public delegate void EventHandler<T>(object sender, T e) where T : EventArgs;
-
         {{#hasApiKeyMethods}}
         /// <summary>
         /// An enum of headers
