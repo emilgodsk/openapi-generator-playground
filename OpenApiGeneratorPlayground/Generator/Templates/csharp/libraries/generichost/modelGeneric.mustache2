@@ -87,7 +87,16 @@
             {{/vendorExtensions.x-is-base-or-new-discriminator}}
             {{/allVars}}
             OnCreated();
-        }
+        }{{^parent}}
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="{{classname}}" /> class.
+        /// Empty to allow for object initialization syntax.
+        /// </summary>
+        {{#model.vendorExtensions.x-model-is-mutable}}{{>visibility}}{{/model.vendorExtensions.x-model-is-mutable}}{{^model.vendorExtensions.x-model-is-mutable}}internal{{/model.vendorExtensions.x-model-is-mutable}} {{classname}}()
+        {
+            OnCreated();
+        }{{/parent}}
 
         {{/composedSchemas.oneOf}}
         partial void OnCreated();
@@ -186,7 +195,7 @@
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public {{#isNew}}new {{/isNew}}{{datatypeWithEnum}} {{name}} { get; }
+        public {{#isNew}}new {{/isNew}}{{datatypeWithEnum}} {{name}} { get; }{{#nrt}}{{^vendorExtensions.x-is-value-type}} = default!;{{/vendorExtensions.x-is-value-type}}{{/nrt}}
 
         {{/model.composedSchemas.oneOf}}
         {{/model.composedSchemas.anyOf}}
@@ -240,7 +249,7 @@
         {{#deprecated}}
         [Obsolete]
         {{/deprecated}}
-        public {{{datatypeWithEnum}}}{{#lambda.first}}{{#isNullable}}{{>NullConditionalProperty}}  {{/isNullable}}{{^required}}{{nrt?}}{{^nrt}}{{#vendorExtensions.x-is-value-type}}?{{/vendorExtensions.x-is-value-type}}{{/nrt}}  {{/required}}{{/lambda.first}} {{name}} {{#required}}{ get; {{^isReadOnly}}set; {{/isReadOnly}}}{{/required}}{{^required}}{ get { return this.{{name}}Option; } {{^isReadOnly}}set { this.{{name}}Option = new{{^net70OrLater}} Option<{{{datatypeWithEnum}}}{{>NullConditionalProperty}}>{{/net70OrLater}}(value); } {{/isReadOnly}}}{{/required}}
+        public {{{datatypeWithEnum}}}{{#lambda.first}}{{#isNullable}}{{>NullConditionalProperty}}  {{/isNullable}}{{^required}}{{nrt?}}{{^nrt}}{{#vendorExtensions.x-is-value-type}}?{{/vendorExtensions.x-is-value-type}}{{/nrt}}  {{/required}}{{/lambda.first}} {{name}} {{#required}}{ get; {{^isReadOnly}}set; {{/isReadOnly}}}{{#nrt}}{{^vendorExtensions.x-is-value-type}} = default!;{{/vendorExtensions.x-is-value-type}}{{/nrt}}{{/required}}{{^required}}{ get { return this.{{name}}Option; } {{^isReadOnly}}set { this.{{name}}Option = new{{^net70OrLater}} Option<{{{datatypeWithEnum}}}{{>NullConditionalProperty}}>{{/net70OrLater}}(value); } {{/isReadOnly}}}{{/required}}
 
         {{/isInherited}}
         {{/isEnum}}
