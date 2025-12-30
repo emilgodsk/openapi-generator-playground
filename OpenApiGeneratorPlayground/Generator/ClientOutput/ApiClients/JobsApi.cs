@@ -229,16 +229,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         private JsonSerializerOptions _jsonSerializerOptions;
 
         /// <summary>
-        /// The logger factory
-        /// </summary>
-        public ILoggerFactory LoggerFactory { get; }
-
-        /// <summary>
-        /// The logger
-        /// </summary>
-        public ILogger<JobsApi> Logger { get; }
-
-        /// <summary>
         /// The HttpClient
         /// </summary>
         public HttpClient HttpClient { get; }
@@ -252,62 +242,14 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         /// Initializes a new instance of the <see cref="JobsApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public JobsApi(ILogger<JobsApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, JobsApiEvents jobsApiEvents)
+        public JobsApi(HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, JobsApiEvents jobsApiEvents)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
-            LoggerFactory = loggerFactory;
-            Logger = LoggerFactory.CreateLogger<JobsApi>();
             HttpClient = httpClient;
             Events = jobsApiEvents;
         }
 
         partial void FormatGetJob(ref Guid jobId);
-
-        /// <summary>
-        /// Processes the server response
-        /// </summary>
-        /// <param name="apiResponseLocalVar"></param>
-        /// <param name="jobId"></param>
-        private void AfterGetJobDefaultImplementation(IGetJobApiResponse apiResponseLocalVar, Guid jobId)
-        {
-            bool suppressDefaultLog = false;
-            AfterGetJob(ref suppressDefaultLog, apiResponseLocalVar, jobId);
-            if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
-        }
-
-        /// <summary>
-        /// Processes the server response
-        /// </summary>
-        /// <param name="suppressDefaultLog"></param>
-        /// <param name="apiResponseLocalVar"></param>
-        /// <param name="jobId"></param>
-        partial void AfterGetJob(ref bool suppressDefaultLog, IGetJobApiResponse apiResponseLocalVar, Guid jobId);
-
-        /// <summary>
-        /// Logs exceptions that occur while retrieving the server response
-        /// </summary>
-        /// <param name="exceptionLocalVar"></param>
-        /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
-        /// <param name="jobId"></param>
-        private void OnErrorGetJobDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Guid jobId)
-        {
-            bool suppressDefaultLogLocalVar = false;
-            OnErrorGetJob(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, jobId);
-            if (!suppressDefaultLogLocalVar)
-                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
-        }
-
-        /// <summary>
-        /// A partial method that gives developers a way to provide customized exception handling
-        /// </summary>
-        /// <param name="suppressDefaultLogLocalVar"></param>
-        /// <param name="exceptionLocalVar"></param>
-        /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
-        /// <param name="jobId"></param>
-        partial void OnErrorGetJob(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Guid jobId);
 
         /// <summary>
         /// Get job by ID 
@@ -369,19 +311,16 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        ILogger<GetJobApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<GetJobApiResponse>();
                         GetJobApiResponse apiResponseLocalVar;
 
                         switch ((int)httpResponseMessageLocalVar.StatusCode) {
                             default: {
                                 string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/jobs/{jobId}", requestedAtLocalVar, _jsonSerializerOptions);
+                                apiResponseLocalVar = new(httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/jobs/{jobId}", requestedAtLocalVar, _jsonSerializerOptions);
 
                                 break;
                             }
                         }
-
-                        AfterGetJobDefaultImplementation(apiResponseLocalVar, jobId);
 
                         Events.ExecuteOnGetJob(apiResponseLocalVar);
 
@@ -391,7 +330,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             }
             catch(Exception e)
             {
-                OnErrorGetJobDefaultImplementation(e, "/jobs/{jobId}", uriBuilderLocalVar.Path, jobId);
                 Events.ExecuteOnErrorGetJob(e);
                 throw;
             }
@@ -403,39 +341,30 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         public partial class GetJobApiResponse : MyPackageClient.ThisIsTest.ManyOf.Them.Common.ApiResponse, IGetJobApiResponse
         {
             /// <summary>
-            /// The logger
-            /// </summary>
-            public ILogger<GetJobApiResponse> Logger { get; }
-
-            /// <summary>
             /// The <see cref="GetJobApiResponse"/>
             /// </summary>
-            /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
             /// <param name="httpResponseMessage"></param>
             /// <param name="rawContent"></param>
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public GetJobApiResponse(ILogger<GetJobApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public GetJobApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
-                Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
             /// <summary>
             /// The <see cref="GetJobApiResponse"/>
             /// </summary>
-            /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
             /// <param name="httpResponseMessage"></param>
             /// <param name="contentStream"></param>
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public GetJobApiResponse(ILogger<GetJobApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
+            public GetJobApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
-                Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
@@ -471,9 +400,10 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
                 try
                 {
                     result = Ok();
-                } catch (Exception e)
+                }
+                catch (Exception)
                 {
-                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                    // Do nothing
                 }
 
                 return result != null;
@@ -509,76 +439,17 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
                 try
                 {
                     result = NotFound();
-                } catch (Exception e)
+                }
+                catch (Exception)
                 {
-                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)404);
+                    // Do nothing
                 }
 
                 return result != null;
             }
-
-            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
-            {
-                bool suppressDefaultLog = false;
-                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
-                if (!suppressDefaultLog)
-                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
-            }
-
-            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
         partial void FormatListJobs(ref Option<int> limit, ref Option<int> offset);
-
-        /// <summary>
-        /// Processes the server response
-        /// </summary>
-        /// <param name="apiResponseLocalVar"></param>
-        /// <param name="limit"></param>
-        /// <param name="offset"></param>
-        private void AfterListJobsDefaultImplementation(IListJobsApiResponse apiResponseLocalVar, Option<int> limit, Option<int> offset)
-        {
-            bool suppressDefaultLog = false;
-            AfterListJobs(ref suppressDefaultLog, apiResponseLocalVar, limit, offset);
-            if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
-        }
-
-        /// <summary>
-        /// Processes the server response
-        /// </summary>
-        /// <param name="suppressDefaultLog"></param>
-        /// <param name="apiResponseLocalVar"></param>
-        /// <param name="limit"></param>
-        /// <param name="offset"></param>
-        partial void AfterListJobs(ref bool suppressDefaultLog, IListJobsApiResponse apiResponseLocalVar, Option<int> limit, Option<int> offset);
-
-        /// <summary>
-        /// Logs exceptions that occur while retrieving the server response
-        /// </summary>
-        /// <param name="exceptionLocalVar"></param>
-        /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
-        /// <param name="limit"></param>
-        /// <param name="offset"></param>
-        private void OnErrorListJobsDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<int> limit, Option<int> offset)
-        {
-            bool suppressDefaultLogLocalVar = false;
-            OnErrorListJobs(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, limit, offset);
-            if (!suppressDefaultLogLocalVar)
-                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
-        }
-
-        /// <summary>
-        /// A partial method that gives developers a way to provide customized exception handling
-        /// </summary>
-        /// <param name="suppressDefaultLogLocalVar"></param>
-        /// <param name="exceptionLocalVar"></param>
-        /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
-        /// <param name="limit"></param>
-        /// <param name="offset"></param>
-        partial void OnErrorListJobs(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, Option<int> limit, Option<int> offset);
 
         /// <summary>
         /// List jobs 
@@ -651,19 +522,16 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        ILogger<ListJobsApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ListJobsApiResponse>();
                         ListJobsApiResponse apiResponseLocalVar;
 
                         switch ((int)httpResponseMessageLocalVar.StatusCode) {
                             default: {
                                 string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/jobs", requestedAtLocalVar, _jsonSerializerOptions);
+                                apiResponseLocalVar = new(httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/jobs", requestedAtLocalVar, _jsonSerializerOptions);
 
                                 break;
                             }
                         }
-
-                        AfterListJobsDefaultImplementation(apiResponseLocalVar, limit, offset);
 
                         Events.ExecuteOnListJobs(apiResponseLocalVar);
 
@@ -673,7 +541,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             }
             catch(Exception e)
             {
-                OnErrorListJobsDefaultImplementation(e, "/jobs", uriBuilderLocalVar.Path, limit, offset);
                 Events.ExecuteOnErrorListJobs(e);
                 throw;
             }
@@ -685,39 +552,30 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         public partial class ListJobsApiResponse : MyPackageClient.ThisIsTest.ManyOf.Them.Common.ApiResponse, IListJobsApiResponse
         {
             /// <summary>
-            /// The logger
-            /// </summary>
-            public ILogger<ListJobsApiResponse> Logger { get; }
-
-            /// <summary>
             /// The <see cref="ListJobsApiResponse"/>
             /// </summary>
-            /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
             /// <param name="httpResponseMessage"></param>
             /// <param name="rawContent"></param>
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ListJobsApiResponse(ILogger<ListJobsApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public ListJobsApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
-                Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
             /// <summary>
             /// The <see cref="ListJobsApiResponse"/>
             /// </summary>
-            /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
             /// <param name="httpResponseMessage"></param>
             /// <param name="contentStream"></param>
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public ListJobsApiResponse(ILogger<ListJobsApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
+            public ListJobsApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
-                Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
@@ -753,23 +611,14 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
                 try
                 {
                     result = Ok();
-                } catch (Exception e)
+                }
+                catch (Exception)
                 {
-                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                    // Do nothing
                 }
 
                 return result != null;
             }
-
-            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
-            {
-                bool suppressDefaultLog = false;
-                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
-                if (!suppressDefaultLog)
-                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
-            }
-
-            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
         partial void FormatSubmitJob(JobRequest jobRequest);
@@ -784,52 +633,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             if (jobRequest == null)
                 throw new ArgumentNullException(nameof(jobRequest));
         }
-
-        /// <summary>
-        /// Processes the server response
-        /// </summary>
-        /// <param name="apiResponseLocalVar"></param>
-        /// <param name="jobRequest"></param>
-        private void AfterSubmitJobDefaultImplementation(ISubmitJobApiResponse apiResponseLocalVar, JobRequest jobRequest)
-        {
-            bool suppressDefaultLog = false;
-            AfterSubmitJob(ref suppressDefaultLog, apiResponseLocalVar, jobRequest);
-            if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
-        }
-
-        /// <summary>
-        /// Processes the server response
-        /// </summary>
-        /// <param name="suppressDefaultLog"></param>
-        /// <param name="apiResponseLocalVar"></param>
-        /// <param name="jobRequest"></param>
-        partial void AfterSubmitJob(ref bool suppressDefaultLog, ISubmitJobApiResponse apiResponseLocalVar, JobRequest jobRequest);
-
-        /// <summary>
-        /// Logs exceptions that occur while retrieving the server response
-        /// </summary>
-        /// <param name="exceptionLocalVar"></param>
-        /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
-        /// <param name="jobRequest"></param>
-        private void OnErrorSubmitJobDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, JobRequest jobRequest)
-        {
-            bool suppressDefaultLogLocalVar = false;
-            OnErrorSubmitJob(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, jobRequest);
-            if (!suppressDefaultLogLocalVar)
-                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
-        }
-
-        /// <summary>
-        /// A partial method that gives developers a way to provide customized exception handling
-        /// </summary>
-        /// <param name="suppressDefaultLogLocalVar"></param>
-        /// <param name="exceptionLocalVar"></param>
-        /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
-        /// <param name="jobRequest"></param>
-        partial void OnErrorSubmitJob(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, JobRequest jobRequest);
 
         /// <summary>
         /// Submit a job 
@@ -905,19 +708,16 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        ILogger<SubmitJobApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<SubmitJobApiResponse>();
                         SubmitJobApiResponse apiResponseLocalVar;
 
                         switch ((int)httpResponseMessageLocalVar.StatusCode) {
                             default: {
                                 string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/jobs", requestedAtLocalVar, _jsonSerializerOptions);
+                                apiResponseLocalVar = new(httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/jobs", requestedAtLocalVar, _jsonSerializerOptions);
 
                                 break;
                             }
                         }
-
-                        AfterSubmitJobDefaultImplementation(apiResponseLocalVar, jobRequest);
 
                         Events.ExecuteOnSubmitJob(apiResponseLocalVar);
 
@@ -927,7 +727,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             }
             catch(Exception e)
             {
-                OnErrorSubmitJobDefaultImplementation(e, "/jobs", uriBuilderLocalVar.Path, jobRequest);
                 Events.ExecuteOnErrorSubmitJob(e);
                 throw;
             }
@@ -939,39 +738,30 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         public partial class SubmitJobApiResponse : MyPackageClient.ThisIsTest.ManyOf.Them.Common.ApiResponse, ISubmitJobApiResponse
         {
             /// <summary>
-            /// The logger
-            /// </summary>
-            public ILogger<SubmitJobApiResponse> Logger { get; }
-
-            /// <summary>
             /// The <see cref="SubmitJobApiResponse"/>
             /// </summary>
-            /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
             /// <param name="httpResponseMessage"></param>
             /// <param name="rawContent"></param>
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public SubmitJobApiResponse(ILogger<SubmitJobApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public SubmitJobApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
-                Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
             /// <summary>
             /// The <see cref="SubmitJobApiResponse"/>
             /// </summary>
-            /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
             /// <param name="httpResponseMessage"></param>
             /// <param name="contentStream"></param>
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public SubmitJobApiResponse(ILogger<SubmitJobApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
+            public SubmitJobApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
-                Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
@@ -1007,9 +797,10 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
                 try
                 {
                     result = Created();
-                } catch (Exception e)
+                }
+                catch (Exception)
                 {
-                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)201);
+                    // Do nothing
                 }
 
                 return result != null;
@@ -1045,23 +836,14 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
                 try
                 {
                     result = BadRequest();
-                } catch (Exception e)
+                }
+                catch (Exception)
                 {
-                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)400);
+                    // Do nothing
                 }
 
                 return result != null;
             }
-
-            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
-            {
-                bool suppressDefaultLog = false;
-                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
-                if (!suppressDefaultLog)
-                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
-            }
-
-            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
     }
 }

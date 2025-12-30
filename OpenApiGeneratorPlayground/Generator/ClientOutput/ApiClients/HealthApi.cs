@@ -103,16 +103,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         private JsonSerializerOptions _jsonSerializerOptions;
 
         /// <summary>
-        /// The logger factory
-        /// </summary>
-        public ILoggerFactory LoggerFactory { get; }
-
-        /// <summary>
-        /// The logger
-        /// </summary>
-        public ILogger<HealthApi> Logger { get; }
-
-        /// <summary>
         /// The HttpClient
         /// </summary>
         public HttpClient HttpClient { get; }
@@ -126,56 +116,12 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         /// Initializes a new instance of the <see cref="HealthApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public HealthApi(ILogger<HealthApi> logger, ILoggerFactory loggerFactory, HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, HealthApiEvents healthApiEvents)
+        public HealthApi(HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, HealthApiEvents healthApiEvents)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
-            LoggerFactory = loggerFactory;
-            Logger = LoggerFactory.CreateLogger<HealthApi>();
             HttpClient = httpClient;
             Events = healthApiEvents;
         }
-
-        /// <summary>
-        /// Processes the server response
-        /// </summary>
-        /// <param name="apiResponseLocalVar"></param>
-        private void AfterHealthCheckDefaultImplementation(IHealthCheckApiResponse apiResponseLocalVar)
-        {
-            bool suppressDefaultLog = false;
-            AfterHealthCheck(ref suppressDefaultLog, apiResponseLocalVar);
-            if (!suppressDefaultLog)
-                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
-        }
-
-        /// <summary>
-        /// Processes the server response
-        /// </summary>
-        /// <param name="suppressDefaultLog"></param>
-        /// <param name="apiResponseLocalVar"></param>
-        partial void AfterHealthCheck(ref bool suppressDefaultLog, IHealthCheckApiResponse apiResponseLocalVar);
-
-        /// <summary>
-        /// Logs exceptions that occur while retrieving the server response
-        /// </summary>
-        /// <param name="exceptionLocalVar"></param>
-        /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
-        private void OnErrorHealthCheckDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar)
-        {
-            bool suppressDefaultLogLocalVar = false;
-            OnErrorHealthCheck(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar);
-            if (!suppressDefaultLogLocalVar)
-                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
-        }
-
-        /// <summary>
-        /// A partial method that gives developers a way to provide customized exception handling
-        /// </summary>
-        /// <param name="suppressDefaultLogLocalVar"></param>
-        /// <param name="exceptionLocalVar"></param>
-        /// <param name="pathFormatLocalVar"></param>
-        /// <param name="pathLocalVar"></param>
-        partial void OnErrorHealthCheck(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar);
 
         /// <summary>
         /// Health check 
@@ -232,19 +178,16 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
 
                     using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
                     {
-                        ILogger<HealthCheckApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<HealthCheckApiResponse>();
                         HealthCheckApiResponse apiResponseLocalVar;
 
                         switch ((int)httpResponseMessageLocalVar.StatusCode) {
                             default: {
                                 string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/health", requestedAtLocalVar, _jsonSerializerOptions);
+                                apiResponseLocalVar = new(httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/health", requestedAtLocalVar, _jsonSerializerOptions);
 
                                 break;
                             }
                         }
-
-                        AfterHealthCheckDefaultImplementation(apiResponseLocalVar);
 
                         Events.ExecuteOnHealthCheck(apiResponseLocalVar);
 
@@ -254,7 +197,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             }
             catch(Exception e)
             {
-                OnErrorHealthCheckDefaultImplementation(e, "/health", uriBuilderLocalVar.Path);
                 Events.ExecuteOnErrorHealthCheck(e);
                 throw;
             }
@@ -266,39 +208,30 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         public partial class HealthCheckApiResponse : MyPackageClient.ThisIsTest.ManyOf.Them.Common.ApiResponse, IHealthCheckApiResponse
         {
             /// <summary>
-            /// The logger
-            /// </summary>
-            public ILogger<HealthCheckApiResponse> Logger { get; }
-
-            /// <summary>
             /// The <see cref="HealthCheckApiResponse"/>
             /// </summary>
-            /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
             /// <param name="httpResponseMessage"></param>
             /// <param name="rawContent"></param>
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public HealthCheckApiResponse(ILogger<HealthCheckApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            public HealthCheckApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
-                Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
             /// <summary>
             /// The <see cref="HealthCheckApiResponse"/>
             /// </summary>
-            /// <param name="logger"></param>
             /// <param name="httpRequestMessage"></param>
             /// <param name="httpResponseMessage"></param>
             /// <param name="contentStream"></param>
             /// <param name="path"></param>
             /// <param name="requestedAt"></param>
             /// <param name="jsonSerializerOptions"></param>
-            public HealthCheckApiResponse(ILogger<HealthCheckApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
+            public HealthCheckApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
-                Logger = logger;
                 OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
@@ -334,23 +267,14 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
                 try
                 {
                     result = Ok();
-                } catch (Exception e)
+                }
+                catch (Exception)
                 {
-                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                    // Do nothing
                 }
 
                 return result != null;
             }
-
-            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
-            {
-                bool suppressDefaultLog = false;
-                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
-                if (!suppressDefaultLog)
-                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
-            }
-
-            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
     }
 }
