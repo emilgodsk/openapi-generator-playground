@@ -12,7 +12,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace MyPackageServer.Another.Common
+namespace MyPackageServer.Another.Test.Common
 {
     /// <summary>
     /// Formatter for 'date-time' openapi formats ss defined by full-date - RFC3339

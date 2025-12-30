@@ -4,7 +4,7 @@
 
 using System;
 
-namespace MyPackageServer.Another.Common
+namespace MyPackageServer.Another.Test.Common
 {
     /// <summary>
     /// The base for all tokens.

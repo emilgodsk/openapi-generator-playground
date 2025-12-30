@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Common
+namespace MyPackageClient.ThisIsTest.ManyOf.Them.Common
 {
     /// <summary>
     /// Provides a token to the api clients. Tokens will be rate limited based on the provided TimeSpan.

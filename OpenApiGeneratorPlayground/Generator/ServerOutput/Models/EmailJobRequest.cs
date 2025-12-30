@@ -20,9 +20,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MyPackageServer.Another.Common;
+using MyPackageServer.Another.Test.Common;
 
-namespace MyPackageServer.Another.Test
+namespace MyPackageServer.Another.Test.Models
 {
     /// <summary>
     /// EmailJobRequest

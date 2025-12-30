@@ -14,7 +14,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Common
+namespace MyPackageClient.ThisIsTest.ManyOf.Them.Common
 {
     /// <summary>
     /// Provides a non-generic contract for the ApiResponse wrapper.

@@ -5,7 +5,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Common
+namespace MyPackageClient.ThisIsTest.ManyOf.Them.Common
 {
     /// <summary>
     /// A container for a collection of tokens.

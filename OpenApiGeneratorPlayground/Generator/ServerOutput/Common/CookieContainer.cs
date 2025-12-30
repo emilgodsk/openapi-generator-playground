@@ -5,7 +5,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace MyPackageServer.Another.Common
+namespace MyPackageServer.Another.Test.Common
 {
     /// <summary>
     /// A class containing a CookieContainer

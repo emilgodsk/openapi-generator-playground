@@ -20,9 +20,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MyPackageServer.Another.Common;
+using MyPackageClient.ThisIsTest.ManyOf.Them.Common;
 
-namespace MyPackageServer.Another.Test
+namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
 {
     /// <summary>
     /// JobRequest

@@ -20,31 +20,31 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MyPackageServer.Another.Common;
+using MyPackageClient.ThisIsTest.ManyOf.Them.Common;
 
-namespace MyPackageServer.Another.Test
+namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
 {
     /// <summary>
-    /// HealthCheck200Response
+    /// EmailTarget
     /// </summary>
-    public partial class HealthCheck200Response
+    public partial class EmailTarget
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HealthCheck200Response" /> class.
+        /// Initializes a new instance of the <see cref="EmailTarget" /> class.
         /// </summary>
-        /// <param name="status">status</param>
+        /// <param name="email">email</param>
         [JsonConstructor]
-        public HealthCheck200Response(Option<string?> status = default)
+        public EmailTarget(string email)
         {
-            StatusOption = status;
+            Email = email;
             OnCreated();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HealthCheck200Response" /> class.
+        /// Initializes a new instance of the <see cref="EmailTarget" /> class.
         /// Empty to allow for object initialization syntax.
         /// </summary>
-        public HealthCheck200Response()
+        public EmailTarget()
         {
             OnCreated();
         }
@@ -52,18 +52,10 @@ namespace MyPackageServer.Another.Test
         partial void OnCreated();
 
         /// <summary>
-        /// Used to track the state of Status
+        /// Gets or Sets Email
         /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> StatusOption { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets Status
-        /// </summary>
-        /* <example>ok</example> */
-        [JsonPropertyName("status")]
-        public string? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+        [JsonPropertyName("email")]
+        public string Email { get; set; } = default!;
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -72,8 +64,8 @@ namespace MyPackageServer.Another.Test
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class HealthCheck200Response {\n");
-            sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("class EmailTarget {\n");
+            sb.Append("  Email: ").Append(Email).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -81,19 +73,19 @@ namespace MyPackageServer.Another.Test
 
 
     /// <summary>
-    /// A Json converter for type <see cref="HealthCheck200Response" />
+    /// A Json converter for type <see cref="EmailTarget" />
     /// </summary>
-    public class HealthCheck200ResponseJsonConverter : JsonConverter<HealthCheck200Response>
+    public class EmailTargetJsonConverter : JsonConverter<EmailTarget>
     {
         /// <summary>
-        /// Deserializes json to <see cref="HealthCheck200Response" />
+        /// Deserializes json to <see cref="EmailTarget" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
         /// <param name="typeToConvert"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <returns></returns>
         /// <exception cref="JsonException"></exception>
-        public override HealthCheck200Response Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public override EmailTarget Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
         {
             int currentDepth = utf8JsonReader.CurrentDepth;
 
@@ -102,7 +94,7 @@ namespace MyPackageServer.Another.Test
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> status = default;
+            Option<string?> email = default;
 
             while (utf8JsonReader.Read())
             {
@@ -119,8 +111,8 @@ namespace MyPackageServer.Another.Test
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "status":
-                            status = new Option<string?>(utf8JsonReader.GetString()!);
+                        case "email":
+                            email = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         default:
                             break;
@@ -128,41 +120,43 @@ namespace MyPackageServer.Another.Test
                 }
             }
 
-            if (status.IsSet && status.Value == null)
-                throw new ArgumentNullException(nameof(status), "Property is not nullable for class HealthCheck200Response.");
+            if (!email.IsSet)
+                throw new ArgumentException("Property is required for class EmailTarget.", nameof(email));
 
-            return new HealthCheck200Response(status);
+            if (email.IsSet && email.Value == null)
+                throw new ArgumentNullException(nameof(email), "Property is not nullable for class EmailTarget.");
+
+            return new EmailTarget(email.Value!);
         }
 
         /// <summary>
-        /// Serializes a <see cref="HealthCheck200Response" />
+        /// Serializes a <see cref="EmailTarget" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="healthCheck200Response"></param>
+        /// <param name="emailTarget"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, HealthCheck200Response healthCheck200Response, JsonSerializerOptions jsonSerializerOptions)
+        public override void Write(Utf8JsonWriter writer, EmailTarget emailTarget, JsonSerializerOptions jsonSerializerOptions)
         {
             writer.WriteStartObject();
 
-            WriteProperties(writer, healthCheck200Response, jsonSerializerOptions);
+            WriteProperties(writer, emailTarget, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
         /// <summary>
-        /// Serializes the properties of <see cref="HealthCheck200Response" />
+        /// Serializes the properties of <see cref="EmailTarget" />
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="healthCheck200Response"></param>
+        /// <param name="emailTarget"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, HealthCheck200Response healthCheck200Response, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, EmailTarget emailTarget, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (healthCheck200Response.StatusOption.IsSet && healthCheck200Response.Status == null)
-                throw new ArgumentNullException(nameof(healthCheck200Response.Status), "Property is required for class HealthCheck200Response.");
+            if (emailTarget.Email == null)
+                throw new ArgumentNullException(nameof(emailTarget.Email), "Property is required for class EmailTarget.");
 
-            if (healthCheck200Response.StatusOption.IsSet)
-                writer.WriteString("status", healthCheck200Response.Status);
+            writer.WriteString("email", emailTarget.Email);
         }
     }
 }

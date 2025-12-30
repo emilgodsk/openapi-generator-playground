@@ -13,9 +13,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using MyPackageServer.Another.Common;
+using MyPackageServer.Another.Test.Common;
 
-namespace MyPackageServer.Another
+namespace MyPackageServer.Another.Test
 {
     /// <summary>
     /// A class which will provide tokens.

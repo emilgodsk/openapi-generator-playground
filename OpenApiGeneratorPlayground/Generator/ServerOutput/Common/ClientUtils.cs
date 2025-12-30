@@ -17,12 +17,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using MyPackageServer.Another.Test;
+using MyPackageServer.Another.Test.Models;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("MyPackageServer.Another.Test")]
+[assembly: InternalsVisibleTo("MyPackageServer.Another.Test.Test")]
 
-namespace MyPackageServer.Another.Common
+namespace MyPackageServer.Another.Test.Common
 {
     /// <summary>
     /// Utility functions providing some benefit to API client consumers.

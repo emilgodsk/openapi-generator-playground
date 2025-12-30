@@ -1,6 +1,6 @@
 using System;
 
-namespace MyPackageServer.Another.Common
+namespace MyPackageServer.Another.Test.Common
 {
     /// <summary>
     /// Useful for tracking server health

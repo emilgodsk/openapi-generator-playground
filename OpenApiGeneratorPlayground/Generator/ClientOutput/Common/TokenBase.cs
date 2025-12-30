@@ -4,7 +4,7 @@
 
 using System;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Common
+namespace MyPackageClient.ThisIsTest.ManyOf.Them.Common
 {
     /// <summary>
     /// The base for all tokens.

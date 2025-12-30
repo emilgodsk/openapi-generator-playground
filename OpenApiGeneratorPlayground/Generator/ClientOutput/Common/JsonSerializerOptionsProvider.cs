@@ -4,7 +4,7 @@
 
 using System.Text.Json;
 
-namespace MyPackageClient.ThisIsTest.ManyOf.Common
+namespace MyPackageClient.ThisIsTest.ManyOf.Them.Common
 {
     /// <summary>
     /// Provides the JsonSerializerOptions

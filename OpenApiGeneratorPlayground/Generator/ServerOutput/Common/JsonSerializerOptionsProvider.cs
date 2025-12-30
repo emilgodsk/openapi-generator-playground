@@ -4,7 +4,7 @@
 
 using System.Text.Json;
 
-namespace MyPackageServer.Another.Common
+namespace MyPackageServer.Another.Test.Common
 {
     /// <summary>
     /// Provides the JsonSerializerOptions
