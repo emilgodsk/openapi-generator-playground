@@ -140,6 +140,7 @@ namespace MyPackageClient.Models
         }
     }
 
+
     /// <summary>
     /// A Json converter for type <see cref="JobRequest" />
     /// </summary>

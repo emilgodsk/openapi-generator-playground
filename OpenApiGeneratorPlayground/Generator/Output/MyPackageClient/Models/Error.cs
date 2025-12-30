@@ -44,6 +44,15 @@ namespace MyPackageClient.Models
             OnCreated();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Error" /> class.
+        /// Empty to allow for object initialization syntax.
+        /// </summary>
+        public Error()
+        {
+            OnCreated();
+        }
+
         partial void OnCreated();
 
         /// <summary>
@@ -86,6 +95,7 @@ namespace MyPackageClient.Models
             return sb.ToString();
         }
     }
+
 
     /// <summary>
     /// A Json converter for type <see cref="Error" />

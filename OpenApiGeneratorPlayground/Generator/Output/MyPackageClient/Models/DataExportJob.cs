@@ -42,6 +42,15 @@ namespace MyPackageClient.Models
             OnCreated();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataExportJob" /> class.
+        /// Empty to allow for object initialization syntax.
+        /// </summary>
+        public DataExportJob()
+        {
+            OnCreated();
+        }
+
         partial void OnCreated();
 
         /// <summary>
@@ -150,6 +159,7 @@ namespace MyPackageClient.Models
             return sb.ToString();
         }
     }
+
 
     /// <summary>
     /// A Json converter for type <see cref="DataExportJob" />

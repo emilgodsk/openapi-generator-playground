@@ -40,6 +40,15 @@ namespace MyPackageServer.Models
             OnCreated();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HealthCheck200Response" /> class.
+        /// Empty to allow for object initialization syntax.
+        /// </summary>
+        public HealthCheck200Response()
+        {
+            OnCreated();
+        }
+
         partial void OnCreated();
 
         /// <summary>
@@ -69,6 +78,7 @@ namespace MyPackageServer.Models
             return sb.ToString();
         }
     }
+
 
     /// <summary>
     /// A Json converter for type <see cref="HealthCheck200Response" />

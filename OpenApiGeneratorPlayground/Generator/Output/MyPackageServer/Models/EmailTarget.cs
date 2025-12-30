@@ -40,6 +40,15 @@ namespace MyPackageServer.Models
             OnCreated();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmailTarget" /> class.
+        /// Empty to allow for object initialization syntax.
+        /// </summary>
+        public EmailTarget()
+        {
+            OnCreated();
+        }
+
         partial void OnCreated();
 
         /// <summary>
@@ -61,6 +70,7 @@ namespace MyPackageServer.Models
             return sb.ToString();
         }
     }
+
 
     /// <summary>
     /// A Json converter for type <see cref="EmailTarget" />

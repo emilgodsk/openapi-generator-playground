@@ -55,6 +55,15 @@ namespace MyPackageServer.Models
             OnCreated();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Job" /> class.
+        /// Empty to allow for object initialization syntax.
+        /// </summary>
+        public Job()
+        {
+            OnCreated();
+        }
+
         partial void OnCreated();
 
         /// <summary>
@@ -233,6 +242,7 @@ namespace MyPackageServer.Models
             return sb.ToString();
         }
     }
+
 
     /// <summary>
     /// A Json converter for type <see cref="Job" />
