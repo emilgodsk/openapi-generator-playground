@@ -31,15 +31,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Common
     {
 
         /// <summary>
-        /// A delegate for events.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        public delegate void EventHandler<T>(object sender, T e) where T : EventArgs;
-
-        /// <summary>
         /// Returns true when deserialization succeeds.
         /// </summary>
         /// <typeparam name="T"></typeparam>

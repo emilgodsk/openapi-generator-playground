@@ -60,8 +60,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Common
             JsonSerializerOptionsProvider jsonSerializerOptionsProvider = new(_jsonOptions);
             _services.AddSingleton(jsonSerializerOptionsProvider);
             _services.AddSingleton<IApiFactory, ApiFactory>();
-            _services.AddSingleton<HealthApiEvents>();
-            _services.AddSingleton<JobsApiEvents>();
         }
 
         /// <summary>
