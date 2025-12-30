@@ -92,122 +92,123 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             return sb.ToString();
         }
 
-    /// <summary>
-    /// A Json converter for type <see cref="Error" />
-    /// </summary>
-    public class ErrorJsonConverter : JsonConverter<Error>
-    {
         /// <summary>
-        /// Deserializes json to <see cref="Error" />
+        /// A Json converter for type <see cref="Error" />
         /// </summary>
-        /// <param name="utf8JsonReader"></param>
-        /// <param name="typeToConvert"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <returns></returns>
-        /// <exception cref="JsonException"></exception>
-        public override Error Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public class ErrorJsonConverter : JsonConverter<Error>
         {
-            int currentDepth = utf8JsonReader.CurrentDepth;
-
-            if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
-                throw new JsonException();
-
-            JsonTokenType startingTokenType = utf8JsonReader.TokenType;
-
-            Option<string?> code = default;
-            Option<string?> message = default;
-            Option<Dictionary<string, Object>?> details = default;
-
-            while (utf8JsonReader.Read())
+            /// <summary>
+            /// Deserializes json to <see cref="Error" />
+            /// </summary>
+            /// <param name="utf8JsonReader"></param>
+            /// <param name="typeToConvert"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <returns></returns>
+            /// <exception cref="JsonException"></exception>
+            public override Error Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
             {
-                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                int currentDepth = utf8JsonReader.CurrentDepth;
 
-                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
+                    throw new JsonException();
 
-                if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
+                JsonTokenType startingTokenType = utf8JsonReader.TokenType;
+
+                Option<string?> code = default;
+                Option<string?> message = default;
+                Option<Dictionary<string, Object>?> details = default;
+
+                while (utf8JsonReader.Read())
                 {
-                    string? localVarJsonPropertyName = utf8JsonReader.GetString();
-                    utf8JsonReader.Read();
+                    if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
 
-                    switch (localVarJsonPropertyName)
+                    if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
+
+                    if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
                     {
-                        case "code":
-                            code = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "message":
-                            message = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "details":
-                            details = new Option<Dictionary<string, Object>?>(JsonSerializer.Deserialize<Dictionary<string, Object>>(ref utf8JsonReader, jsonSerializerOptions)!);
-                            break;
-                        default:
-                            break;
+                        string? localVarJsonPropertyName = utf8JsonReader.GetString();
+                        utf8JsonReader.Read();
+
+                        switch (localVarJsonPropertyName)
+                        {
+                            case "code":
+                                code = new Option<string?>(utf8JsonReader.GetString()!);
+                                break;
+                            case "message":
+                                message = new Option<string?>(utf8JsonReader.GetString()!);
+                                break;
+                            case "details":
+                                details = new Option<Dictionary<string, Object>?>(JsonSerializer.Deserialize<Dictionary<string, Object>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
+
+                if (!code.IsSet)
+                    throw new ArgumentException("Property is required for class Error.", nameof(code));
+
+                if (!message.IsSet)
+                    throw new ArgumentException("Property is required for class Error.", nameof(message));
+
+                if (code.IsSet && code.Value == null)
+                    throw new ArgumentNullException(nameof(code), "Property is not nullable for class Error.");
+
+                if (message.IsSet && message.Value == null)
+                    throw new ArgumentNullException(nameof(message), "Property is not nullable for class Error.");
+
+                if (details.IsSet && details.Value == null)
+                    throw new ArgumentNullException(nameof(details), "Property is not nullable for class Error.");
+
+                return new Error(code.Value!, message.Value!, details);
             }
 
-            if (!code.IsSet)
-                throw new ArgumentException("Property is required for class Error.", nameof(code));
-
-            if (!message.IsSet)
-                throw new ArgumentException("Property is required for class Error.", nameof(message));
-
-            if (code.IsSet && code.Value == null)
-                throw new ArgumentNullException(nameof(code), "Property is not nullable for class Error.");
-
-            if (message.IsSet && message.Value == null)
-                throw new ArgumentNullException(nameof(message), "Property is not nullable for class Error.");
-
-            if (details.IsSet && details.Value == null)
-                throw new ArgumentNullException(nameof(details), "Property is not nullable for class Error.");
-
-            return new Error(code.Value!, message.Value!, details);
-        }
-
-        /// <summary>
-        /// Serializes a <see cref="Error" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="error"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, Error error, JsonSerializerOptions jsonSerializerOptions)
-        {
-            writer.WriteStartObject();
-
-            WriteProperties(writer, error, jsonSerializerOptions);
-            writer.WriteEndObject();
-        }
-
-        /// <summary>
-        /// Serializes the properties of <see cref="Error" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="error"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, Error error, JsonSerializerOptions jsonSerializerOptions)
-        {
-            if (error.Code == null)
-                throw new ArgumentNullException(nameof(error.Code), "Property is required for class Error.");
-
-            if (error.Message == null)
-                throw new ArgumentNullException(nameof(error.Message), "Property is required for class Error.");
-
-            if (error.DetailsOption.IsSet && error.Details == null)
-                throw new ArgumentNullException(nameof(error.Details), "Property is required for class Error.");
-
-            writer.WriteString("code", error.Code);
-
-            writer.WriteString("message", error.Message);
-
-            if (error.DetailsOption.IsSet)
+            /// <summary>
+            /// Serializes a <see cref="Error" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="error"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public override void Write(Utf8JsonWriter writer, Error error, JsonSerializerOptions jsonSerializerOptions)
             {
-                writer.WritePropertyName("details");
-                JsonSerializer.Serialize(writer, error.Details, jsonSerializerOptions);
+                writer.WriteStartObject();
+
+                WriteProperties(writer, error, jsonSerializerOptions);
+                writer.WriteEndObject();
+            }
+
+            /// <summary>
+            /// Serializes the properties of <see cref="Error" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="error"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public void WriteProperties(Utf8JsonWriter writer, Error error, JsonSerializerOptions jsonSerializerOptions)
+            {
+                if (error.Code == null)
+                    throw new ArgumentNullException(nameof(error.Code), "Property is required for class Error.");
+
+                if (error.Message == null)
+                    throw new ArgumentNullException(nameof(error.Message), "Property is required for class Error.");
+
+                if (error.DetailsOption.IsSet && error.Details == null)
+                    throw new ArgumentNullException(nameof(error.Details), "Property is required for class Error.");
+
+                writer.WriteString("code", error.Code);
+
+                writer.WriteString("message", error.Message);
+
+                if (error.DetailsOption.IsSet)
+                {
+                    writer.WritePropertyName("details");
+                    JsonSerializer.Serialize(writer, error.Details, jsonSerializerOptions);
+                }
             }
         }
-    }    }
+    }
 }

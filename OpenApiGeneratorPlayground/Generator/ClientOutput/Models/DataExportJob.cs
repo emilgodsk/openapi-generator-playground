@@ -156,100 +156,101 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             return sb.ToString();
         }
 
-    /// <summary>
-    /// A Json converter for type <see cref="DataExportJob" />
-    /// </summary>
-    public class DataExportJobJsonConverter : JsonConverter<DataExportJob>
-    {
         /// <summary>
-        /// Deserializes json to <see cref="DataExportJob" />
+        /// A Json converter for type <see cref="DataExportJob" />
         /// </summary>
-        /// <param name="utf8JsonReader"></param>
-        /// <param name="typeToConvert"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <returns></returns>
-        /// <exception cref="JsonException"></exception>
-        public override DataExportJob Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public class DataExportJobJsonConverter : JsonConverter<DataExportJob>
         {
-            int currentDepth = utf8JsonReader.CurrentDepth;
-
-            if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
-                throw new JsonException();
-
-            JsonTokenType startingTokenType = utf8JsonReader.TokenType;
-
-            Option<DataExportJob.FormatEnum?> format = default;
-            Option<string?> downloadUrl = default;
-
-            while (utf8JsonReader.Read())
+            /// <summary>
+            /// Deserializes json to <see cref="DataExportJob" />
+            /// </summary>
+            /// <param name="utf8JsonReader"></param>
+            /// <param name="typeToConvert"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <returns></returns>
+            /// <exception cref="JsonException"></exception>
+            public override DataExportJob Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
             {
-                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                int currentDepth = utf8JsonReader.CurrentDepth;
 
-                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
+                    throw new JsonException();
 
-                if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
+                JsonTokenType startingTokenType = utf8JsonReader.TokenType;
+
+                Option<DataExportJob.FormatEnum?> format = default;
+                Option<string?> downloadUrl = default;
+
+                while (utf8JsonReader.Read())
                 {
-                    string? localVarJsonPropertyName = utf8JsonReader.GetString();
-                    utf8JsonReader.Read();
+                    if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
 
-                    switch (localVarJsonPropertyName)
+                    if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
+
+                    if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
                     {
-                        case "format":
-                            string? formatRawValue = utf8JsonReader.GetString();
-                            if (formatRawValue != null)
-                                format = new Option<DataExportJob.FormatEnum?>(DataExportJob.FormatEnumFromStringOrDefault(formatRawValue));
-                            break;
-                        case "downloadUrl":
-                            downloadUrl = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        default:
-                            break;
+                        string? localVarJsonPropertyName = utf8JsonReader.GetString();
+                        utf8JsonReader.Read();
+
+                        switch (localVarJsonPropertyName)
+                        {
+                            case "format":
+                                string? formatRawValue = utf8JsonReader.GetString();
+                                if (formatRawValue != null)
+                                    format = new Option<DataExportJob.FormatEnum?>(DataExportJob.FormatEnumFromStringOrDefault(formatRawValue));
+                                break;
+                            case "downloadUrl":
+                                downloadUrl = new Option<string?>(utf8JsonReader.GetString()!);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
+
+                if (format.IsSet && format.Value == null)
+                    throw new ArgumentNullException(nameof(format), "Property is not nullable for class DataExportJob.");
+
+                if (downloadUrl.IsSet && downloadUrl.Value == null)
+                    throw new ArgumentNullException(nameof(downloadUrl), "Property is not nullable for class DataExportJob.");
+
+                return new DataExportJob(format, downloadUrl);
             }
 
-            if (format.IsSet && format.Value == null)
-                throw new ArgumentNullException(nameof(format), "Property is not nullable for class DataExportJob.");
+            /// <summary>
+            /// Serializes a <see cref="DataExportJob" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="dataExportJob"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public override void Write(Utf8JsonWriter writer, DataExportJob dataExportJob, JsonSerializerOptions jsonSerializerOptions)
+            {
+                writer.WriteStartObject();
 
-            if (downloadUrl.IsSet && downloadUrl.Value == null)
-                throw new ArgumentNullException(nameof(downloadUrl), "Property is not nullable for class DataExportJob.");
+                WriteProperties(writer, dataExportJob, jsonSerializerOptions);
+                writer.WriteEndObject();
+            }
 
-            return new DataExportJob(format, downloadUrl);
-        }
+            /// <summary>
+            /// Serializes the properties of <see cref="DataExportJob" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="dataExportJob"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public void WriteProperties(Utf8JsonWriter writer, DataExportJob dataExportJob, JsonSerializerOptions jsonSerializerOptions)
+            {
+                if (dataExportJob.DownloadUrlOption.IsSet && dataExportJob.DownloadUrl == null)
+                    throw new ArgumentNullException(nameof(dataExportJob.DownloadUrl), "Property is required for class DataExportJob.");
 
-        /// <summary>
-        /// Serializes a <see cref="DataExportJob" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="dataExportJob"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, DataExportJob dataExportJob, JsonSerializerOptions jsonSerializerOptions)
-        {
-            writer.WriteStartObject();
-
-            WriteProperties(writer, dataExportJob, jsonSerializerOptions);
-            writer.WriteEndObject();
-        }
-
-        /// <summary>
-        /// Serializes the properties of <see cref="DataExportJob" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="dataExportJob"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, DataExportJob dataExportJob, JsonSerializerOptions jsonSerializerOptions)
-        {
-            if (dataExportJob.DownloadUrlOption.IsSet && dataExportJob.DownloadUrl == null)
-                throw new ArgumentNullException(nameof(dataExportJob.DownloadUrl), "Property is required for class DataExportJob.");
-
-            var formatRawValue = DataExportJob.FormatEnumToJsonValue(dataExportJob.FormatOption.Value!.Value);
-            writer.WriteString("format", formatRawValue);
-            if (dataExportJob.DownloadUrlOption.IsSet)
+                var formatRawValue = DataExportJob.FormatEnumToJsonValue(dataExportJob.FormatOption.Value!.Value);
+                writer.WriteString("format", formatRawValue);
+                if (dataExportJob.DownloadUrlOption.IsSet)
                 writer.WriteString("downloadUrl", dataExportJob.DownloadUrl);
+            }
         }
-    }    }
+    }
 }

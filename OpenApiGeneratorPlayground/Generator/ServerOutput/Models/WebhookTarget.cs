@@ -67,91 +67,92 @@ namespace MyPackageServer.Another.Test
             return sb.ToString();
         }
 
-    /// <summary>
-    /// A Json converter for type <see cref="WebhookTarget" />
-    /// </summary>
-    public class WebhookTargetJsonConverter : JsonConverter<WebhookTarget>
-    {
         /// <summary>
-        /// Deserializes json to <see cref="WebhookTarget" />
+        /// A Json converter for type <see cref="WebhookTarget" />
         /// </summary>
-        /// <param name="utf8JsonReader"></param>
-        /// <param name="typeToConvert"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <returns></returns>
-        /// <exception cref="JsonException"></exception>
-        public override WebhookTarget Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public class WebhookTargetJsonConverter : JsonConverter<WebhookTarget>
         {
-            int currentDepth = utf8JsonReader.CurrentDepth;
-
-            if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
-                throw new JsonException();
-
-            JsonTokenType startingTokenType = utf8JsonReader.TokenType;
-
-            Option<string?> url = default;
-
-            while (utf8JsonReader.Read())
+            /// <summary>
+            /// Deserializes json to <see cref="WebhookTarget" />
+            /// </summary>
+            /// <param name="utf8JsonReader"></param>
+            /// <param name="typeToConvert"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <returns></returns>
+            /// <exception cref="JsonException"></exception>
+            public override WebhookTarget Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
             {
-                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                int currentDepth = utf8JsonReader.CurrentDepth;
 
-                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
+                    throw new JsonException();
 
-                if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
+                JsonTokenType startingTokenType = utf8JsonReader.TokenType;
+
+                Option<string?> url = default;
+
+                while (utf8JsonReader.Read())
                 {
-                    string? localVarJsonPropertyName = utf8JsonReader.GetString();
-                    utf8JsonReader.Read();
+                    if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
 
-                    switch (localVarJsonPropertyName)
+                    if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
+
+                    if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
                     {
-                        case "url":
-                            url = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        default:
-                            break;
+                        string? localVarJsonPropertyName = utf8JsonReader.GetString();
+                        utf8JsonReader.Read();
+
+                        switch (localVarJsonPropertyName)
+                        {
+                            case "url":
+                                url = new Option<string?>(utf8JsonReader.GetString()!);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
+
+                if (!url.IsSet)
+                    throw new ArgumentException("Property is required for class WebhookTarget.", nameof(url));
+
+                if (url.IsSet && url.Value == null)
+                    throw new ArgumentNullException(nameof(url), "Property is not nullable for class WebhookTarget.");
+
+                return new WebhookTarget(url.Value!);
             }
 
-            if (!url.IsSet)
-                throw new ArgumentException("Property is required for class WebhookTarget.", nameof(url));
+            /// <summary>
+            /// Serializes a <see cref="WebhookTarget" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="webhookTarget"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public override void Write(Utf8JsonWriter writer, WebhookTarget webhookTarget, JsonSerializerOptions jsonSerializerOptions)
+            {
+                writer.WriteStartObject();
 
-            if (url.IsSet && url.Value == null)
-                throw new ArgumentNullException(nameof(url), "Property is not nullable for class WebhookTarget.");
+                WriteProperties(writer, webhookTarget, jsonSerializerOptions);
+                writer.WriteEndObject();
+            }
 
-            return new WebhookTarget(url.Value!);
+            /// <summary>
+            /// Serializes the properties of <see cref="WebhookTarget" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="webhookTarget"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public void WriteProperties(Utf8JsonWriter writer, WebhookTarget webhookTarget, JsonSerializerOptions jsonSerializerOptions)
+            {
+                if (webhookTarget.Url == null)
+                    throw new ArgumentNullException(nameof(webhookTarget.Url), "Property is required for class WebhookTarget.");
+
+                writer.WriteString("url", webhookTarget.Url);
+            }
         }
-
-        /// <summary>
-        /// Serializes a <see cref="WebhookTarget" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="webhookTarget"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, WebhookTarget webhookTarget, JsonSerializerOptions jsonSerializerOptions)
-        {
-            writer.WriteStartObject();
-
-            WriteProperties(writer, webhookTarget, jsonSerializerOptions);
-            writer.WriteEndObject();
-        }
-
-        /// <summary>
-        /// Serializes the properties of <see cref="WebhookTarget" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="webhookTarget"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, WebhookTarget webhookTarget, JsonSerializerOptions jsonSerializerOptions)
-        {
-            if (webhookTarget.Url == null)
-                throw new ArgumentNullException(nameof(webhookTarget.Url), "Property is required for class WebhookTarget.");
-
-            writer.WriteString("url", webhookTarget.Url);
-        }
-    }    }
+    }
 }

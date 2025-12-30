@@ -90,102 +90,103 @@ namespace MyPackageServer.Another.Test
             return sb.ToString();
         }
 
-    /// <summary>
-    /// A Json converter for type <see cref="EmailJob" />
-    /// </summary>
-    public class EmailJobJsonConverter : JsonConverter<EmailJob>
-    {
         /// <summary>
-        /// Deserializes json to <see cref="EmailJob" />
+        /// A Json converter for type <see cref="EmailJob" />
         /// </summary>
-        /// <param name="utf8JsonReader"></param>
-        /// <param name="typeToConvert"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <returns></returns>
-        /// <exception cref="JsonException"></exception>
-        public override EmailJob Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public class EmailJobJsonConverter : JsonConverter<EmailJob>
         {
-            int currentDepth = utf8JsonReader.CurrentDepth;
-
-            if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
-                throw new JsonException();
-
-            JsonTokenType startingTokenType = utf8JsonReader.TokenType;
-
-            Option<string?> recipient = default;
-            Option<string?> subject = default;
-
-            while (utf8JsonReader.Read())
+            /// <summary>
+            /// Deserializes json to <see cref="EmailJob" />
+            /// </summary>
+            /// <param name="utf8JsonReader"></param>
+            /// <param name="typeToConvert"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <returns></returns>
+            /// <exception cref="JsonException"></exception>
+            public override EmailJob Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
             {
-                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                int currentDepth = utf8JsonReader.CurrentDepth;
 
-                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
+                    throw new JsonException();
 
-                if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
+                JsonTokenType startingTokenType = utf8JsonReader.TokenType;
+
+                Option<string?> recipient = default;
+                Option<string?> subject = default;
+
+                while (utf8JsonReader.Read())
                 {
-                    string? localVarJsonPropertyName = utf8JsonReader.GetString();
-                    utf8JsonReader.Read();
+                    if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
 
-                    switch (localVarJsonPropertyName)
+                    if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
+
+                    if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
                     {
-                        case "recipient":
-                            recipient = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "subject":
-                            subject = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        default:
-                            break;
+                        string? localVarJsonPropertyName = utf8JsonReader.GetString();
+                        utf8JsonReader.Read();
+
+                        switch (localVarJsonPropertyName)
+                        {
+                            case "recipient":
+                                recipient = new Option<string?>(utf8JsonReader.GetString()!);
+                                break;
+                            case "subject":
+                                subject = new Option<string?>(utf8JsonReader.GetString()!);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
+
+                if (recipient.IsSet && recipient.Value == null)
+                    throw new ArgumentNullException(nameof(recipient), "Property is not nullable for class EmailJob.");
+
+                if (subject.IsSet && subject.Value == null)
+                    throw new ArgumentNullException(nameof(subject), "Property is not nullable for class EmailJob.");
+
+                return new EmailJob(recipient, subject);
             }
 
-            if (recipient.IsSet && recipient.Value == null)
-                throw new ArgumentNullException(nameof(recipient), "Property is not nullable for class EmailJob.");
+            /// <summary>
+            /// Serializes a <see cref="EmailJob" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="emailJob"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public override void Write(Utf8JsonWriter writer, EmailJob emailJob, JsonSerializerOptions jsonSerializerOptions)
+            {
+                writer.WriteStartObject();
 
-            if (subject.IsSet && subject.Value == null)
-                throw new ArgumentNullException(nameof(subject), "Property is not nullable for class EmailJob.");
+                WriteProperties(writer, emailJob, jsonSerializerOptions);
+                writer.WriteEndObject();
+            }
 
-            return new EmailJob(recipient, subject);
-        }
+            /// <summary>
+            /// Serializes the properties of <see cref="EmailJob" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="emailJob"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public void WriteProperties(Utf8JsonWriter writer, EmailJob emailJob, JsonSerializerOptions jsonSerializerOptions)
+            {
+                if (emailJob.RecipientOption.IsSet && emailJob.Recipient == null)
+                    throw new ArgumentNullException(nameof(emailJob.Recipient), "Property is required for class EmailJob.");
 
-        /// <summary>
-        /// Serializes a <see cref="EmailJob" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="emailJob"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, EmailJob emailJob, JsonSerializerOptions jsonSerializerOptions)
-        {
-            writer.WriteStartObject();
+                if (emailJob.SubjectOption.IsSet && emailJob.Subject == null)
+                    throw new ArgumentNullException(nameof(emailJob.Subject), "Property is required for class EmailJob.");
 
-            WriteProperties(writer, emailJob, jsonSerializerOptions);
-            writer.WriteEndObject();
-        }
-
-        /// <summary>
-        /// Serializes the properties of <see cref="EmailJob" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="emailJob"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, EmailJob emailJob, JsonSerializerOptions jsonSerializerOptions)
-        {
-            if (emailJob.RecipientOption.IsSet && emailJob.Recipient == null)
-                throw new ArgumentNullException(nameof(emailJob.Recipient), "Property is required for class EmailJob.");
-
-            if (emailJob.SubjectOption.IsSet && emailJob.Subject == null)
-                throw new ArgumentNullException(nameof(emailJob.Subject), "Property is required for class EmailJob.");
-
-            if (emailJob.RecipientOption.IsSet)
+                if (emailJob.RecipientOption.IsSet)
                 writer.WriteString("recipient", emailJob.Recipient);
 
-            if (emailJob.SubjectOption.IsSet)
+                if (emailJob.SubjectOption.IsSet)
                 writer.WriteString("subject", emailJob.Subject);
+            }
         }
-    }    }
+    }
 }

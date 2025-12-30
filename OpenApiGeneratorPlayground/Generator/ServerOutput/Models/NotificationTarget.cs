@@ -85,118 +85,119 @@ namespace MyPackageServer.Another.Test
             return sb.ToString();
         }
 
-    /// <summary>
-    /// A Json converter for type <see cref="NotificationTarget" />
-    /// </summary>
-    public class NotificationTargetJsonConverter : JsonConverter<NotificationTarget>
-    {
         /// <summary>
-        /// Deserializes json to <see cref="NotificationTarget" />
+        /// A Json converter for type <see cref="NotificationTarget" />
         /// </summary>
-        /// <param name="utf8JsonReader"></param>
-        /// <param name="typeToConvert"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <returns></returns>
-        /// <exception cref="JsonException"></exception>
-        public override NotificationTarget Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public class NotificationTargetJsonConverter : JsonConverter<NotificationTarget>
         {
-            int currentDepth = utf8JsonReader.CurrentDepth;
-
-            if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
-                throw new JsonException();
-
-            JsonTokenType startingTokenType = utf8JsonReader.TokenType;
-
-            EmailTarget? emailTarget = default;
-            WebhookTarget? webhookTarget = default;
-
-            Utf8JsonReader utf8JsonReaderAnyOf = utf8JsonReader;
-            while (utf8JsonReaderAnyOf.Read())
+            /// <summary>
+            /// Deserializes json to <see cref="NotificationTarget" />
+            /// </summary>
+            /// <param name="utf8JsonReader"></param>
+            /// <param name="typeToConvert"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <returns></returns>
+            /// <exception cref="JsonException"></exception>
+            public override NotificationTarget Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
             {
-                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReaderAnyOf.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReaderAnyOf.CurrentDepth)
-                    break;
+                int currentDepth = utf8JsonReader.CurrentDepth;
 
-                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReaderAnyOf.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReaderAnyOf.CurrentDepth)
-                    break;
+                if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
+                    throw new JsonException();
 
-                if (utf8JsonReaderAnyOf.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReaderAnyOf.CurrentDepth - 1)
+                JsonTokenType startingTokenType = utf8JsonReader.TokenType;
+
+                EmailTarget? emailTarget = default;
+                WebhookTarget? webhookTarget = default;
+
+                Utf8JsonReader utf8JsonReaderAnyOf = utf8JsonReader;
+                while (utf8JsonReaderAnyOf.Read())
                 {
-                    Utf8JsonReader utf8JsonReaderEmailTarget = utf8JsonReader;
-                    ClientUtils.TryDeserialize<EmailTarget?>(ref utf8JsonReaderEmailTarget, jsonSerializerOptions, out emailTarget);
+                    if (startingTokenType == JsonTokenType.StartObject && utf8JsonReaderAnyOf.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReaderAnyOf.CurrentDepth)
+                        break;
 
-                    Utf8JsonReader utf8JsonReaderWebhookTarget = utf8JsonReader;
-                    ClientUtils.TryDeserialize<WebhookTarget?>(ref utf8JsonReaderWebhookTarget, jsonSerializerOptions, out webhookTarget);
-                }
-            }
+                    if (startingTokenType == JsonTokenType.StartArray && utf8JsonReaderAnyOf.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReaderAnyOf.CurrentDepth)
+                        break;
 
-            while (utf8JsonReader.Read())
-            {
-                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
-
-                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
-
-                if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
-                {
-                    string? localVarJsonPropertyName = utf8JsonReader.GetString();
-                    utf8JsonReader.Read();
-
-                    switch (localVarJsonPropertyName)
+                    if (utf8JsonReaderAnyOf.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReaderAnyOf.CurrentDepth - 1)
                     {
-                        default:
-                            break;
+                        Utf8JsonReader utf8JsonReaderEmailTarget = utf8JsonReader;
+                        ClientUtils.TryDeserialize<EmailTarget?>(ref utf8JsonReaderEmailTarget, jsonSerializerOptions, out emailTarget);
+
+                        Utf8JsonReader utf8JsonReaderWebhookTarget = utf8JsonReader;
+                        ClientUtils.TryDeserialize<WebhookTarget?>(ref utf8JsonReaderWebhookTarget, jsonSerializerOptions, out webhookTarget);
                     }
                 }
+
+                while (utf8JsonReader.Read())
+                {
+                    if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
+
+                    if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
+
+                    if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
+                    {
+                        string? localVarJsonPropertyName = utf8JsonReader.GetString();
+                        utf8JsonReader.Read();
+
+                        switch (localVarJsonPropertyName)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                Option<EmailTarget?> emailTargetParsedValue = emailTarget == null
+                    ? default
+                    : new Option<EmailTarget?>(emailTarget);
+                Option<WebhookTarget?> webhookTargetParsedValue = webhookTarget == null
+                    ? default
+                    : new Option<WebhookTarget?>(webhookTarget);
+
+                return new NotificationTarget(emailTargetParsedValue, webhookTargetParsedValue);
             }
 
-            Option<EmailTarget?> emailTargetParsedValue = emailTarget == null
-                ? default
-                : new Option<EmailTarget?>(emailTarget);
-            Option<WebhookTarget?> webhookTargetParsedValue = webhookTarget == null
-                ? default
-                : new Option<WebhookTarget?>(webhookTarget);
-
-            return new NotificationTarget(emailTargetParsedValue, webhookTargetParsedValue);
-        }
-
-        /// <summary>
-        /// Serializes a <see cref="NotificationTarget" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="notificationTarget"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, NotificationTarget notificationTarget, JsonSerializerOptions jsonSerializerOptions)
-        {
-            writer.WriteStartObject();
-
-            if (notificationTarget.EmailTargetOption.IsSet && notificationTarget.EmailTargetOption.Value != null)
+            /// <summary>
+            /// Serializes a <see cref="NotificationTarget" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="notificationTarget"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public override void Write(Utf8JsonWriter writer, NotificationTarget notificationTarget, JsonSerializerOptions jsonSerializerOptions)
             {
-                EmailTargetJsonConverter emailTargetJsonConverter = (EmailTargetJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(notificationTarget.EmailTargetOption.Value.GetType()));
-                emailTargetJsonConverter.WriteProperties(writer, notificationTarget.EmailTargetOption.Value, jsonSerializerOptions);
+                writer.WriteStartObject();
+
+                if (notificationTarget.EmailTargetOption.IsSet && notificationTarget.EmailTargetOption.Value != null)
+                {
+                    EmailTargetJsonConverter emailTargetJsonConverter = (EmailTargetJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(notificationTarget.EmailTargetOption.Value.GetType()));
+                    emailTargetJsonConverter.WriteProperties(writer, notificationTarget.EmailTargetOption.Value, jsonSerializerOptions);
+                }
+
+                if (notificationTarget.WebhookTargetOption.IsSet && notificationTarget.WebhookTargetOption.Value != null)
+                {
+                    WebhookTargetJsonConverter webhookTargetJsonConverter = (WebhookTargetJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(notificationTarget.WebhookTargetOption.Value.GetType()));
+                    webhookTargetJsonConverter.WriteProperties(writer, notificationTarget.WebhookTargetOption.Value, jsonSerializerOptions);
+                }
+
+                WriteProperties(writer, notificationTarget, jsonSerializerOptions);
+                writer.WriteEndObject();
             }
 
-            if (notificationTarget.WebhookTargetOption.IsSet && notificationTarget.WebhookTargetOption.Value != null)
+            /// <summary>
+            /// Serializes the properties of <see cref="NotificationTarget" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="notificationTarget"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public void WriteProperties(Utf8JsonWriter writer, NotificationTarget notificationTarget, JsonSerializerOptions jsonSerializerOptions)
             {
-                WebhookTargetJsonConverter webhookTargetJsonConverter = (WebhookTargetJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(notificationTarget.WebhookTargetOption.Value.GetType()));
-                webhookTargetJsonConverter.WriteProperties(writer, notificationTarget.WebhookTargetOption.Value, jsonSerializerOptions);
+
             }
-
-            WriteProperties(writer, notificationTarget, jsonSerializerOptions);
-            writer.WriteEndObject();
         }
-
-        /// <summary>
-        /// Serializes the properties of <see cref="NotificationTarget" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="notificationTarget"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, NotificationTarget notificationTarget, JsonSerializerOptions jsonSerializerOptions)
-        {
-
-        }
-    }    }
+    }
 }

@@ -136,141 +136,142 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them
             return sb.ToString();
         }
 
-    /// <summary>
-    /// A Json converter for type <see cref="JobRequest" />
-    /// </summary>
-    public class JobRequestJsonConverter : JsonConverter<JobRequest>
-    {
         /// <summary>
-        /// Deserializes json to <see cref="JobRequest" />
+        /// A Json converter for type <see cref="JobRequest" />
         /// </summary>
-        /// <param name="utf8JsonReader"></param>
-        /// <param name="typeToConvert"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <returns></returns>
-        /// <exception cref="JsonException"></exception>
-        public override JobRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public class JobRequestJsonConverter : JsonConverter<JobRequest>
         {
-            int currentDepth = utf8JsonReader.CurrentDepth;
+            /// <summary>
+            /// Deserializes json to <see cref="JobRequest" />
+            /// </summary>
+            /// <param name="utf8JsonReader"></param>
+            /// <param name="typeToConvert"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <returns></returns>
+            /// <exception cref="JsonException"></exception>
+            public override JobRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+            {
+                int currentDepth = utf8JsonReader.CurrentDepth;
 
-            if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
+                if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
+                    throw new JsonException();
+
+                JsonTokenType startingTokenType = utf8JsonReader.TokenType;
+
+                Option<JobRequest.TypeEnum?> type = default;
+
+                DataExportJobRequest? dataExportJobRequest = null;
+                EmailJobRequest? emailJobRequest = null;
+
+                Utf8JsonReader utf8JsonReaderDiscriminator = utf8JsonReader;
+                while (utf8JsonReaderDiscriminator.Read())
+                {
+                    if (startingTokenType == JsonTokenType.StartObject && utf8JsonReaderDiscriminator.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReaderDiscriminator.CurrentDepth)
+                        break;
+
+                    if (startingTokenType == JsonTokenType.StartArray && utf8JsonReaderDiscriminator.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReaderDiscriminator.CurrentDepth)
+                        break;
+
+                    if (utf8JsonReaderDiscriminator.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReaderDiscriminator.CurrentDepth - 1)
+                    {
+                        string? localVarJsonPropertyName = utf8JsonReaderDiscriminator.GetString();
+                        utf8JsonReaderDiscriminator.Read();
+                        if (localVarJsonPropertyName?.Equals("type") ?? false)
+                        {
+                            string? discriminator = utf8JsonReaderDiscriminator.GetString();
+                            if (discriminator?.Equals("dataExport") ?? false)
+                            {
+                                Utf8JsonReader utf8JsonReaderDataExportJobRequest = utf8JsonReader;
+                                dataExportJobRequest = JsonSerializer.Deserialize<DataExportJobRequest>(ref utf8JsonReaderDataExportJobRequest, jsonSerializerOptions);
+                            }
+                            if (discriminator?.Equals("email") ?? false)
+                            {
+                                Utf8JsonReader utf8JsonReaderEmailJobRequest = utf8JsonReader;
+                                emailJobRequest = JsonSerializer.Deserialize<EmailJobRequest>(ref utf8JsonReaderEmailJobRequest, jsonSerializerOptions);
+                            }
+                        }
+                    }
+                }
+
+                while (utf8JsonReader.Read())
+                {
+                    if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
+
+                    if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
+
+                    if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
+                    {
+                        string? localVarJsonPropertyName = utf8JsonReader.GetString();
+                        utf8JsonReader.Read();
+
+                        switch (localVarJsonPropertyName)
+                        {
+                            case "type":
+                                string? typeRawValue = utf8JsonReader.GetString();
+                                if (typeRawValue != null)
+                                    type = new Option<JobRequest.TypeEnum?>(JobRequest.TypeEnumFromStringOrDefault(typeRawValue));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                if (!type.IsSet)
+                    throw new ArgumentException("Property is required for class JobRequest.", nameof(type));
+
+                if (type.IsSet && type.Value == null)
+                    throw new ArgumentNullException(nameof(type), "Property is not nullable for class JobRequest.");
+
+                if (dataExportJobRequest != null)
+                    return new JobRequest(dataExportJobRequest);
+
+                if (emailJobRequest != null)
+                    return new JobRequest(emailJobRequest);
+
                 throw new JsonException();
+            }
 
-            JsonTokenType startingTokenType = utf8JsonReader.TokenType;
-
-            Option<JobRequest.TypeEnum?> type = default;
-
-            DataExportJobRequest? dataExportJobRequest = null;
-            EmailJobRequest? emailJobRequest = null;
-
-            Utf8JsonReader utf8JsonReaderDiscriminator = utf8JsonReader;
-            while (utf8JsonReaderDiscriminator.Read())
+            /// <summary>
+            /// Serializes a <see cref="JobRequest" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="jobRequest"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public override void Write(Utf8JsonWriter writer, JobRequest jobRequest, JsonSerializerOptions jsonSerializerOptions)
             {
-                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReaderDiscriminator.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReaderDiscriminator.CurrentDepth)
-                    break;
+                writer.WriteStartObject();
 
-                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReaderDiscriminator.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReaderDiscriminator.CurrentDepth)
-                    break;
-
-                if (utf8JsonReaderDiscriminator.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReaderDiscriminator.CurrentDepth - 1)
+                if (jobRequest.EmailJobRequest != null)
                 {
-                    string? localVarJsonPropertyName = utf8JsonReaderDiscriminator.GetString();
-                    utf8JsonReaderDiscriminator.Read();
-                    if (localVarJsonPropertyName?.Equals("type") ?? false)
-                    {
-                        string? discriminator = utf8JsonReaderDiscriminator.GetString();
-                        if (discriminator?.Equals("dataExport") ?? false)
-                        {
-                            Utf8JsonReader utf8JsonReaderDataExportJobRequest = utf8JsonReader;
-                            dataExportJobRequest = JsonSerializer.Deserialize<DataExportJobRequest>(ref utf8JsonReaderDataExportJobRequest, jsonSerializerOptions);
-                        }
-                        if (discriminator?.Equals("email") ?? false)
-                        {
-                            Utf8JsonReader utf8JsonReaderEmailJobRequest = utf8JsonReader;
-                            emailJobRequest = JsonSerializer.Deserialize<EmailJobRequest>(ref utf8JsonReaderEmailJobRequest, jsonSerializerOptions);
-                        }
-                    }
+                    EmailJobRequestJsonConverter emailJobRequestJsonConverter = (EmailJobRequestJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(jobRequest.EmailJobRequest.GetType()));
+                    emailJobRequestJsonConverter.WriteProperties(writer, jobRequest.EmailJobRequest, jsonSerializerOptions);
                 }
-            }
 
-            while (utf8JsonReader.Read())
-            {
-                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
-
-                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
-
-                if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
+                if (jobRequest.DataExportJobRequest != null)
                 {
-                    string? localVarJsonPropertyName = utf8JsonReader.GetString();
-                    utf8JsonReader.Read();
-
-                    switch (localVarJsonPropertyName)
-                    {
-                        case "type":
-                            string? typeRawValue = utf8JsonReader.GetString();
-                            if (typeRawValue != null)
-                                type = new Option<JobRequest.TypeEnum?>(JobRequest.TypeEnumFromStringOrDefault(typeRawValue));
-                            break;
-                        default:
-                            break;
-                    }
+                    DataExportJobRequestJsonConverter dataExportJobRequestJsonConverter = (DataExportJobRequestJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(jobRequest.DataExportJobRequest.GetType()));
+                    dataExportJobRequestJsonConverter.WriteProperties(writer, jobRequest.DataExportJobRequest, jsonSerializerOptions);
                 }
+
+                WriteProperties(writer, jobRequest, jsonSerializerOptions);
+                writer.WriteEndObject();
             }
 
-            if (!type.IsSet)
-                throw new ArgumentException("Property is required for class JobRequest.", nameof(type));
-
-            if (type.IsSet && type.Value == null)
-                throw new ArgumentNullException(nameof(type), "Property is not nullable for class JobRequest.");
-
-            if (dataExportJobRequest != null)
-                return new JobRequest(dataExportJobRequest);
-
-            if (emailJobRequest != null)
-                return new JobRequest(emailJobRequest);
-
-            throw new JsonException();
-        }
-
-        /// <summary>
-        /// Serializes a <see cref="JobRequest" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="jobRequest"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, JobRequest jobRequest, JsonSerializerOptions jsonSerializerOptions)
-        {
-            writer.WriteStartObject();
-
-            if (jobRequest.EmailJobRequest != null)
+            /// <summary>
+            /// Serializes the properties of <see cref="JobRequest" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="jobRequest"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public void WriteProperties(Utf8JsonWriter writer, JobRequest jobRequest, JsonSerializerOptions jsonSerializerOptions)
             {
-                EmailJobRequestJsonConverter emailJobRequestJsonConverter = (EmailJobRequestJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(jobRequest.EmailJobRequest.GetType()));
-                emailJobRequestJsonConverter.WriteProperties(writer, jobRequest.EmailJobRequest, jsonSerializerOptions);
+
             }
-
-            if (jobRequest.DataExportJobRequest != null)
-            {
-                DataExportJobRequestJsonConverter dataExportJobRequestJsonConverter = (DataExportJobRequestJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(jobRequest.DataExportJobRequest.GetType()));
-                dataExportJobRequestJsonConverter.WriteProperties(writer, jobRequest.DataExportJobRequest, jsonSerializerOptions);
-            }
-
-            WriteProperties(writer, jobRequest, jsonSerializerOptions);
-            writer.WriteEndObject();
         }
-
-        /// <summary>
-        /// Serializes the properties of <see cref="JobRequest" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="jobRequest"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, JobRequest jobRequest, JsonSerializerOptions jsonSerializerOptions)
-        {
-
-        }
-    }    }
+    }
 }

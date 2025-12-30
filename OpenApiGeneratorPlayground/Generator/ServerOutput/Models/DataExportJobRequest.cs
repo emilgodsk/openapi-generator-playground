@@ -210,114 +210,115 @@ namespace MyPackageServer.Another.Test
             return sb.ToString();
         }
 
-    /// <summary>
-    /// A Json converter for type <see cref="DataExportJobRequest" />
-    /// </summary>
-    public class DataExportJobRequestJsonConverter : JsonConverter<DataExportJobRequest>
-    {
         /// <summary>
-        /// Deserializes json to <see cref="DataExportJobRequest" />
+        /// A Json converter for type <see cref="DataExportJobRequest" />
         /// </summary>
-        /// <param name="utf8JsonReader"></param>
-        /// <param name="typeToConvert"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <returns></returns>
-        /// <exception cref="JsonException"></exception>
-        public override DataExportJobRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public class DataExportJobRequestJsonConverter : JsonConverter<DataExportJobRequest>
         {
-            int currentDepth = utf8JsonReader.CurrentDepth;
-
-            if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
-                throw new JsonException();
-
-            JsonTokenType startingTokenType = utf8JsonReader.TokenType;
-
-            Option<DataExportJobRequest.TypeEnum?> type = default;
-            Option<DataExportJobRequest.FormatEnum?> format = default;
-            Option<bool?> includeMetadata = default;
-
-            while (utf8JsonReader.Read())
+            /// <summary>
+            /// Deserializes json to <see cref="DataExportJobRequest" />
+            /// </summary>
+            /// <param name="utf8JsonReader"></param>
+            /// <param name="typeToConvert"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <returns></returns>
+            /// <exception cref="JsonException"></exception>
+            public override DataExportJobRequest Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
             {
-                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                int currentDepth = utf8JsonReader.CurrentDepth;
 
-                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
+                    throw new JsonException();
 
-                if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
+                JsonTokenType startingTokenType = utf8JsonReader.TokenType;
+
+                Option<DataExportJobRequest.TypeEnum?> type = default;
+                Option<DataExportJobRequest.FormatEnum?> format = default;
+                Option<bool?> includeMetadata = default;
+
+                while (utf8JsonReader.Read())
                 {
-                    string? localVarJsonPropertyName = utf8JsonReader.GetString();
-                    utf8JsonReader.Read();
+                    if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
 
-                    switch (localVarJsonPropertyName)
+                    if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
+
+                    if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
                     {
-                        case "type":
-                            string? typeRawValue = utf8JsonReader.GetString();
-                            if (typeRawValue != null)
-                                type = new Option<DataExportJobRequest.TypeEnum?>(DataExportJobRequest.TypeEnumFromStringOrDefault(typeRawValue));
-                            break;
-                        case "format":
-                            string? formatRawValue = utf8JsonReader.GetString();
-                            if (formatRawValue != null)
-                                format = new Option<DataExportJobRequest.FormatEnum?>(DataExportJobRequest.FormatEnumFromStringOrDefault(formatRawValue));
-                            break;
-                        case "includeMetadata":
-                            includeMetadata = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
-                            break;
-                        default:
-                            break;
+                        string? localVarJsonPropertyName = utf8JsonReader.GetString();
+                        utf8JsonReader.Read();
+
+                        switch (localVarJsonPropertyName)
+                        {
+                            case "type":
+                                string? typeRawValue = utf8JsonReader.GetString();
+                                if (typeRawValue != null)
+                                    type = new Option<DataExportJobRequest.TypeEnum?>(DataExportJobRequest.TypeEnumFromStringOrDefault(typeRawValue));
+                                break;
+                            case "format":
+                                string? formatRawValue = utf8JsonReader.GetString();
+                                if (formatRawValue != null)
+                                    format = new Option<DataExportJobRequest.FormatEnum?>(DataExportJobRequest.FormatEnumFromStringOrDefault(formatRawValue));
+                                break;
+                            case "includeMetadata":
+                                includeMetadata = new Option<bool?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (bool?)null : utf8JsonReader.GetBoolean());
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
+
+                if (!type.IsSet)
+                    throw new ArgumentException("Property is required for class DataExportJobRequest.", nameof(type));
+
+                if (!format.IsSet)
+                    throw new ArgumentException("Property is required for class DataExportJobRequest.", nameof(format));
+
+                if (type.IsSet && type.Value == null)
+                    throw new ArgumentNullException(nameof(type), "Property is not nullable for class DataExportJobRequest.");
+
+                if (format.IsSet && format.Value == null)
+                    throw new ArgumentNullException(nameof(format), "Property is not nullable for class DataExportJobRequest.");
+
+                if (includeMetadata.IsSet && includeMetadata.Value == null)
+                    throw new ArgumentNullException(nameof(includeMetadata), "Property is not nullable for class DataExportJobRequest.");
+
+                return new DataExportJobRequest(type.Value!.Value!, format.Value!.Value!, includeMetadata);
             }
 
-            if (!type.IsSet)
-                throw new ArgumentException("Property is required for class DataExportJobRequest.", nameof(type));
+            /// <summary>
+            /// Serializes a <see cref="DataExportJobRequest" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="dataExportJobRequest"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public override void Write(Utf8JsonWriter writer, DataExportJobRequest dataExportJobRequest, JsonSerializerOptions jsonSerializerOptions)
+            {
+                writer.WriteStartObject();
 
-            if (!format.IsSet)
-                throw new ArgumentException("Property is required for class DataExportJobRequest.", nameof(format));
+                WriteProperties(writer, dataExportJobRequest, jsonSerializerOptions);
+                writer.WriteEndObject();
+            }
 
-            if (type.IsSet && type.Value == null)
-                throw new ArgumentNullException(nameof(type), "Property is not nullable for class DataExportJobRequest.");
-
-            if (format.IsSet && format.Value == null)
-                throw new ArgumentNullException(nameof(format), "Property is not nullable for class DataExportJobRequest.");
-
-            if (includeMetadata.IsSet && includeMetadata.Value == null)
-                throw new ArgumentNullException(nameof(includeMetadata), "Property is not nullable for class DataExportJobRequest.");
-
-            return new DataExportJobRequest(type.Value!.Value!, format.Value!.Value!, includeMetadata);
-        }
-
-        /// <summary>
-        /// Serializes a <see cref="DataExportJobRequest" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="dataExportJobRequest"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, DataExportJobRequest dataExportJobRequest, JsonSerializerOptions jsonSerializerOptions)
-        {
-            writer.WriteStartObject();
-
-            WriteProperties(writer, dataExportJobRequest, jsonSerializerOptions);
-            writer.WriteEndObject();
-        }
-
-        /// <summary>
-        /// Serializes the properties of <see cref="DataExportJobRequest" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="dataExportJobRequest"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, DataExportJobRequest dataExportJobRequest, JsonSerializerOptions jsonSerializerOptions)
-        {
-            var typeRawValue = DataExportJobRequest.TypeEnumToJsonValue(dataExportJobRequest.Type);
-            writer.WriteString("type", typeRawValue);
-            var formatRawValue = DataExportJobRequest.FormatEnumToJsonValue(dataExportJobRequest.Format);
-            writer.WriteString("format", formatRawValue);
-            if (dataExportJobRequest.IncludeMetadataOption.IsSet)
+            /// <summary>
+            /// Serializes the properties of <see cref="DataExportJobRequest" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="dataExportJobRequest"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public void WriteProperties(Utf8JsonWriter writer, DataExportJobRequest dataExportJobRequest, JsonSerializerOptions jsonSerializerOptions)
+            {
+                var typeRawValue = DataExportJobRequest.TypeEnumToJsonValue(dataExportJobRequest.Type);
+                writer.WriteString("type", typeRawValue);
+                var formatRawValue = DataExportJobRequest.FormatEnumToJsonValue(dataExportJobRequest.Format);
+                writer.WriteString("format", formatRawValue);
+                if (dataExportJobRequest.IncludeMetadataOption.IsSet)
                 writer.WriteBoolean("includeMetadata", dataExportJobRequest.IncludeMetadataOption.Value!.Value);
+            }
         }
-    }    }
+    }
 }

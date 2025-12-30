@@ -110,150 +110,151 @@ namespace MyPackageServer.Another.Test
             return sb.ToString();
         }
 
-    /// <summary>
-    /// A Json converter for type <see cref="JobBase" />
-    /// </summary>
-    public class JobBaseJsonConverter : JsonConverter<JobBase>
-    {
         /// <summary>
-        /// The format to use to serialize CreatedAt
+        /// A Json converter for type <see cref="JobBase" />
         /// </summary>
-        public static string CreatedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
-
-        /// <summary>
-        /// The format to use to serialize CompletedAt
-        /// </summary>
-        public static string CompletedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
-
-        /// <summary>
-        /// Deserializes json to <see cref="JobBase" />
-        /// </summary>
-        /// <param name="utf8JsonReader"></param>
-        /// <param name="typeToConvert"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <returns></returns>
-        /// <exception cref="JsonException"></exception>
-        public override JobBase Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public class JobBaseJsonConverter : JsonConverter<JobBase>
         {
-            int currentDepth = utf8JsonReader.CurrentDepth;
+            /// <summary>
+            /// The format to use to serialize CreatedAt
+            /// </summary>
+            public static string CreatedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
-            if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
-                throw new JsonException();
+            /// <summary>
+            /// The format to use to serialize CompletedAt
+            /// </summary>
+            public static string CompletedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
-            JsonTokenType startingTokenType = utf8JsonReader.TokenType;
-
-            Option<Guid?> id = default;
-            Option<string?> type = default;
-            Option<JobStatus?> status = default;
-            Option<DateTimeOffset?> createdAt = default;
-            Option<DateTimeOffset?> completedAt = default;
-
-            while (utf8JsonReader.Read())
+            /// <summary>
+            /// Deserializes json to <see cref="JobBase" />
+            /// </summary>
+            /// <param name="utf8JsonReader"></param>
+            /// <param name="typeToConvert"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <returns></returns>
+            /// <exception cref="JsonException"></exception>
+            public override JobBase Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
             {
-                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                int currentDepth = utf8JsonReader.CurrentDepth;
 
-                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
+                    throw new JsonException();
 
-                if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
+                JsonTokenType startingTokenType = utf8JsonReader.TokenType;
+
+                Option<Guid?> id = default;
+                Option<string?> type = default;
+                Option<JobStatus?> status = default;
+                Option<DateTimeOffset?> createdAt = default;
+                Option<DateTimeOffset?> completedAt = default;
+
+                while (utf8JsonReader.Read())
                 {
-                    string? localVarJsonPropertyName = utf8JsonReader.GetString();
-                    utf8JsonReader.Read();
+                    if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
 
-                    switch (localVarJsonPropertyName)
+                    if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
+
+                    if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
                     {
-                        case "id":
-                            id = new Option<Guid?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (Guid?)null : utf8JsonReader.GetGuid());
-                            break;
-                        case "type":
-                            type = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        case "status":
-                            string? statusRawValue = utf8JsonReader.GetString();
-                            if (statusRawValue != null)
-                                status = new Option<JobStatus?>(JobStatusValueConverter.FromStringOrDefault(statusRawValue));
-                            break;
-                        case "createdAt":
-                            createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
-                            break;
-                        case "completedAt":
-                            completedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
-                            break;
-                        default:
-                            break;
+                        string? localVarJsonPropertyName = utf8JsonReader.GetString();
+                        utf8JsonReader.Read();
+
+                        switch (localVarJsonPropertyName)
+                        {
+                            case "id":
+                                id = new Option<Guid?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (Guid?)null : utf8JsonReader.GetGuid());
+                                break;
+                            case "type":
+                                type = new Option<string?>(utf8JsonReader.GetString()!);
+                                break;
+                            case "status":
+                                string? statusRawValue = utf8JsonReader.GetString();
+                                if (statusRawValue != null)
+                                    status = new Option<JobStatus?>(JobStatusValueConverter.FromStringOrDefault(statusRawValue));
+                                break;
+                            case "createdAt":
+                                createdAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
+                                break;
+                            case "completedAt":
+                                completedAt = new Option<DateTimeOffset?>(JsonSerializer.Deserialize<DateTime?>(ref utf8JsonReader, jsonSerializerOptions));
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
+
+                if (!id.IsSet)
+                    throw new ArgumentException("Property is required for class JobBase.", nameof(id));
+
+                if (!type.IsSet)
+                    throw new ArgumentException("Property is required for class JobBase.", nameof(type));
+
+                if (!status.IsSet)
+                    throw new ArgumentException("Property is required for class JobBase.", nameof(status));
+
+                if (!createdAt.IsSet)
+                    throw new ArgumentException("Property is required for class JobBase.", nameof(createdAt));
+
+                if (id.IsSet && id.Value == null)
+                    throw new ArgumentNullException(nameof(id), "Property is not nullable for class JobBase.");
+
+                if (type.IsSet && type.Value == null)
+                    throw new ArgumentNullException(nameof(type), "Property is not nullable for class JobBase.");
+
+                if (status.IsSet && status.Value == null)
+                    throw new ArgumentNullException(nameof(status), "Property is not nullable for class JobBase.");
+
+                if (createdAt.IsSet && createdAt.Value == null)
+                    throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class JobBase.");
+
+                return new JobBase(id.Value!.Value!, type.Value!, status.Value!.Value!, createdAt.Value!.Value!, completedAt);
             }
 
-            if (!id.IsSet)
-                throw new ArgumentException("Property is required for class JobBase.", nameof(id));
+            /// <summary>
+            /// Serializes a <see cref="JobBase" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="jobBase"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public override void Write(Utf8JsonWriter writer, JobBase jobBase, JsonSerializerOptions jsonSerializerOptions)
+            {
+                writer.WriteStartObject();
 
-            if (!type.IsSet)
-                throw new ArgumentException("Property is required for class JobBase.", nameof(type));
+                WriteProperties(writer, jobBase, jsonSerializerOptions);
+                writer.WriteEndObject();
+            }
 
-            if (!status.IsSet)
-                throw new ArgumentException("Property is required for class JobBase.", nameof(status));
+            /// <summary>
+            /// Serializes the properties of <see cref="JobBase" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="jobBase"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public void WriteProperties(Utf8JsonWriter writer, JobBase jobBase, JsonSerializerOptions jsonSerializerOptions)
+            {
+                if (jobBase.Type == null)
+                    throw new ArgumentNullException(nameof(jobBase.Type), "Property is required for class JobBase.");
 
-            if (!createdAt.IsSet)
-                throw new ArgumentException("Property is required for class JobBase.", nameof(createdAt));
+                writer.WriteString("id", jobBase.Id);
 
-            if (id.IsSet && id.Value == null)
-                throw new ArgumentNullException(nameof(id), "Property is not nullable for class JobBase.");
+                writer.WriteString("type", jobBase.Type);
 
-            if (type.IsSet && type.Value == null)
-                throw new ArgumentNullException(nameof(type), "Property is not nullable for class JobBase.");
+                var statusRawValue = JobStatusValueConverter.ToJsonValue(jobBase.Status);
+                writer.WriteString("status", statusRawValue);
 
-            if (status.IsSet && status.Value == null)
-                throw new ArgumentNullException(nameof(status), "Property is not nullable for class JobBase.");
+                writer.WriteString("createdAt", jobBase.CreatedAt.ToString(CreatedAtFormat));
 
-            if (createdAt.IsSet && createdAt.Value == null)
-                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class JobBase.");
-
-            return new JobBase(id.Value!.Value!, type.Value!, status.Value!.Value!, createdAt.Value!.Value!, completedAt);
-        }
-
-        /// <summary>
-        /// Serializes a <see cref="JobBase" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="jobBase"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, JobBase jobBase, JsonSerializerOptions jsonSerializerOptions)
-        {
-            writer.WriteStartObject();
-
-            WriteProperties(writer, jobBase, jsonSerializerOptions);
-            writer.WriteEndObject();
-        }
-
-        /// <summary>
-        /// Serializes the properties of <see cref="JobBase" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="jobBase"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, JobBase jobBase, JsonSerializerOptions jsonSerializerOptions)
-        {
-            if (jobBase.Type == null)
-                throw new ArgumentNullException(nameof(jobBase.Type), "Property is required for class JobBase.");
-
-            writer.WriteString("id", jobBase.Id);
-
-            writer.WriteString("type", jobBase.Type);
-
-            var statusRawValue = JobStatusValueConverter.ToJsonValue(jobBase.Status);
-            writer.WriteString("status", statusRawValue);
-
-            writer.WriteString("createdAt", jobBase.CreatedAt.ToString(CreatedAtFormat));
-
-            if (jobBase.CompletedAtOption.IsSet)
+                if (jobBase.CompletedAtOption.IsSet)
                 if (jobBase.CompletedAtOption.Value != null)
                     writer.WriteString("completedAt", jobBase.CompletedAtOption.Value!.Value.ToString(CompletedAtFormat));
                 else
                     writer.WriteNull("completedAt");
+            }
         }
-    }    }
+    }
 }

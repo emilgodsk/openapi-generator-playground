@@ -75,89 +75,90 @@ namespace MyPackageServer.Another.Test
             return sb.ToString();
         }
 
-    /// <summary>
-    /// A Json converter for type <see cref="HealthCheck200Response" />
-    /// </summary>
-    public class HealthCheck200ResponseJsonConverter : JsonConverter<HealthCheck200Response>
-    {
         /// <summary>
-        /// Deserializes json to <see cref="HealthCheck200Response" />
+        /// A Json converter for type <see cref="HealthCheck200Response" />
         /// </summary>
-        /// <param name="utf8JsonReader"></param>
-        /// <param name="typeToConvert"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <returns></returns>
-        /// <exception cref="JsonException"></exception>
-        public override HealthCheck200Response Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
+        public class HealthCheck200ResponseJsonConverter : JsonConverter<HealthCheck200Response>
         {
-            int currentDepth = utf8JsonReader.CurrentDepth;
-
-            if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
-                throw new JsonException();
-
-            JsonTokenType startingTokenType = utf8JsonReader.TokenType;
-
-            Option<string?> status = default;
-
-            while (utf8JsonReader.Read())
+            /// <summary>
+            /// Deserializes json to <see cref="HealthCheck200Response" />
+            /// </summary>
+            /// <param name="utf8JsonReader"></param>
+            /// <param name="typeToConvert"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <returns></returns>
+            /// <exception cref="JsonException"></exception>
+            public override HealthCheck200Response Read(ref Utf8JsonReader utf8JsonReader, Type typeToConvert, JsonSerializerOptions jsonSerializerOptions)
             {
-                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                int currentDepth = utf8JsonReader.CurrentDepth;
 
-                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
-                    break;
+                if (utf8JsonReader.TokenType != JsonTokenType.StartObject && utf8JsonReader.TokenType != JsonTokenType.StartArray)
+                    throw new JsonException();
 
-                if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
+                JsonTokenType startingTokenType = utf8JsonReader.TokenType;
+
+                Option<string?> status = default;
+
+                while (utf8JsonReader.Read())
                 {
-                    string? localVarJsonPropertyName = utf8JsonReader.GetString();
-                    utf8JsonReader.Read();
+                    if (startingTokenType == JsonTokenType.StartObject && utf8JsonReader.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
 
-                    switch (localVarJsonPropertyName)
+                    if (startingTokenType == JsonTokenType.StartArray && utf8JsonReader.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReader.CurrentDepth)
+                        break;
+
+                    if (utf8JsonReader.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReader.CurrentDepth - 1)
                     {
-                        case "status":
-                            status = new Option<string?>(utf8JsonReader.GetString()!);
-                            break;
-                        default:
-                            break;
+                        string? localVarJsonPropertyName = utf8JsonReader.GetString();
+                        utf8JsonReader.Read();
+
+                        switch (localVarJsonPropertyName)
+                        {
+                            case "status":
+                                status = new Option<string?>(utf8JsonReader.GetString()!);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
+
+                if (status.IsSet && status.Value == null)
+                    throw new ArgumentNullException(nameof(status), "Property is not nullable for class HealthCheck200Response.");
+
+                return new HealthCheck200Response(status);
             }
 
-            if (status.IsSet && status.Value == null)
-                throw new ArgumentNullException(nameof(status), "Property is not nullable for class HealthCheck200Response.");
+            /// <summary>
+            /// Serializes a <see cref="HealthCheck200Response" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="healthCheck200Response"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public override void Write(Utf8JsonWriter writer, HealthCheck200Response healthCheck200Response, JsonSerializerOptions jsonSerializerOptions)
+            {
+                writer.WriteStartObject();
 
-            return new HealthCheck200Response(status);
-        }
+                WriteProperties(writer, healthCheck200Response, jsonSerializerOptions);
+                writer.WriteEndObject();
+            }
 
-        /// <summary>
-        /// Serializes a <see cref="HealthCheck200Response" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="healthCheck200Response"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void Write(Utf8JsonWriter writer, HealthCheck200Response healthCheck200Response, JsonSerializerOptions jsonSerializerOptions)
-        {
-            writer.WriteStartObject();
+            /// <summary>
+            /// Serializes the properties of <see cref="HealthCheck200Response" />
+            /// </summary>
+            /// <param name="writer"></param>
+            /// <param name="healthCheck200Response"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            /// <exception cref="NotImplementedException"></exception>
+            public void WriteProperties(Utf8JsonWriter writer, HealthCheck200Response healthCheck200Response, JsonSerializerOptions jsonSerializerOptions)
+            {
+                if (healthCheck200Response.StatusOption.IsSet && healthCheck200Response.Status == null)
+                    throw new ArgumentNullException(nameof(healthCheck200Response.Status), "Property is required for class HealthCheck200Response.");
 
-            WriteProperties(writer, healthCheck200Response, jsonSerializerOptions);
-            writer.WriteEndObject();
-        }
-
-        /// <summary>
-        /// Serializes the properties of <see cref="HealthCheck200Response" />
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="healthCheck200Response"></param>
-        /// <param name="jsonSerializerOptions"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(Utf8JsonWriter writer, HealthCheck200Response healthCheck200Response, JsonSerializerOptions jsonSerializerOptions)
-        {
-            if (healthCheck200Response.StatusOption.IsSet && healthCheck200Response.Status == null)
-                throw new ArgumentNullException(nameof(healthCheck200Response.Status), "Property is required for class HealthCheck200Response.");
-
-            if (healthCheck200Response.StatusOption.IsSet)
+                if (healthCheck200Response.StatusOption.IsSet)
                 writer.WriteString("status", healthCheck200Response.Status);
+            }
         }
-    }    }
+    }
 }
