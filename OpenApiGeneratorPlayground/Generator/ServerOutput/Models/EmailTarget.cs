@@ -37,7 +37,6 @@ namespace MyPackageServer.Another.Test.Models
         public EmailTarget(string email)
         {
             Email = email;
-            OnCreated();
         }
 
         /// <summary>
@@ -46,10 +45,8 @@ namespace MyPackageServer.Another.Test.Models
         /// </summary>
         public EmailTarget()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Gets or Sets Email

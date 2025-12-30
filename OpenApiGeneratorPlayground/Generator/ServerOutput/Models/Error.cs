@@ -41,7 +41,6 @@ namespace MyPackageServer.Another.Test.Models
             Code = code;
             Message = message;
             DetailsOption = details;
-            OnCreated();
         }
 
         /// <summary>
@@ -50,10 +49,8 @@ namespace MyPackageServer.Another.Test.Models
         /// </summary>
         public Error()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Gets or Sets Code

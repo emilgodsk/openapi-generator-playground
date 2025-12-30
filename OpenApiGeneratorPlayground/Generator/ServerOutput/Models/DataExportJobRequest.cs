@@ -41,7 +41,6 @@ namespace MyPackageServer.Another.Test.Models
             Type = type;
             Format = format;
             IncludeMetadataOption = includeMetadata;
-            OnCreated();
         }
 
         /// <summary>
@@ -50,10 +49,8 @@ namespace MyPackageServer.Another.Test.Models
         /// </summary>
         public DataExportJobRequest()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Defines Type

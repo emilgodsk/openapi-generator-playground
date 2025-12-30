@@ -42,7 +42,6 @@
             {{/model.composedSchemas.anyOf}}
             {{/vendorExtensions.x-is-base-or-new-discriminator}}
             {{/allVars}}
-            OnCreated();
         }
 
         {{/vendorExtensions.x-duplicated-data-type}}
@@ -86,7 +85,6 @@
             {{/model.composedSchemas.anyOf}}
             {{/vendorExtensions.x-is-base-or-new-discriminator}}
             {{/allVars}}
-            OnCreated();
         }{{^parent}}
 
         /// <summary>
@@ -95,11 +93,9 @@
         /// </summary>
         {{#model.vendorExtensions.x-model-is-mutable}}{{>visibility}}{{/model.vendorExtensions.x-model-is-mutable}}{{^model.vendorExtensions.x-model-is-mutable}}internal{{/model.vendorExtensions.x-model-is-mutable}} {{classname}}()
         {
-            OnCreated();
         }{{/parent}}
 
         {{/composedSchemas.oneOf}}
-        partial void OnCreated();
 
         {{#vars}}
         {{#items.isEnum}}

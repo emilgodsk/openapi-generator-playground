@@ -41,7 +41,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
             Code = code;
             Message = message;
             DetailsOption = details;
-            OnCreated();
         }
 
         /// <summary>
@@ -50,10 +49,8 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
         /// </summary>
         public Error()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Gets or Sets Code

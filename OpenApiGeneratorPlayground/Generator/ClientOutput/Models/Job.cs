@@ -52,7 +52,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
             SubjectOption = subject;
             FormatOption = format;
             DownloadUrlOption = downloadUrl;
-            OnCreated();
         }
 
         /// <summary>
@@ -61,10 +60,8 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
         /// </summary>
         public Job()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Gets or Sets Status

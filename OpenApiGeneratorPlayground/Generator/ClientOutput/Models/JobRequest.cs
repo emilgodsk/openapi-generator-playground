@@ -36,7 +36,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
         public JobRequest(EmailJobRequest emailJobRequest)
         {
             EmailJobRequest = emailJobRequest;
-            OnCreated();
         }
 
         /// <summary>
@@ -46,10 +45,8 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
         public JobRequest(DataExportJobRequest dataExportJobRequest)
         {
             DataExportJobRequest = dataExportJobRequest;
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Defines Type

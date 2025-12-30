@@ -43,7 +43,6 @@ namespace MyPackageServer.Another.Test.Models
             Recipient = recipient;
             Subject = subject;
             BodyOption = body;
-            OnCreated();
         }
 
         /// <summary>
@@ -52,10 +51,8 @@ namespace MyPackageServer.Another.Test.Models
         /// </summary>
         public EmailJobRequest()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Defines Type

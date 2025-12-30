@@ -39,7 +39,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
         {
             RecipientOption = recipient;
             SubjectOption = subject;
-            OnCreated();
         }
 
         /// <summary>
@@ -48,10 +47,8 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
         /// </summary>
         public EmailJob()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Used to track the state of Recipient

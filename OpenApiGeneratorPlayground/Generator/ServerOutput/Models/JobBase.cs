@@ -45,7 +45,6 @@ namespace MyPackageServer.Another.Test.Models
             Status = status;
             CreatedAt = createdAt;
             CompletedAtOption = completedAt;
-            OnCreated();
         }
 
         /// <summary>
@@ -54,10 +53,8 @@ namespace MyPackageServer.Another.Test.Models
         /// </summary>
         public JobBase()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Gets or Sets Status

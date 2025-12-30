@@ -31,11 +31,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
     public interface IJobsApi : IApi
     {
         /// <summary>
-        /// The class containing the events
-        /// </summary>
-        JobsApiEvents Events { get; }
-
-        /// <summary>
         /// Get job by ID
         /// </summary>
         /// <remarks>
@@ -158,72 +153,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public class JobsApiEvents
-    {
-        /// <summary>
-        /// The event raised after the server response
-        /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnGetJob;
-
-        /// <summary>
-        /// The event raised after an error querying the server
-        /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorGetJob;
-
-        internal void ExecuteOnGetJob(JobsApi.GetJobApiResponse apiResponse)
-        {
-            OnGetJob?.Invoke(this, new ApiResponseEventArgs(apiResponse));
-        }
-
-        internal void ExecuteOnErrorGetJob(Exception exception)
-        {
-            OnErrorGetJob?.Invoke(this, new ExceptionEventArgs(exception));
-        }
-
-        /// <summary>
-        /// The event raised after the server response
-        /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnListJobs;
-
-        /// <summary>
-        /// The event raised after an error querying the server
-        /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorListJobs;
-
-        internal void ExecuteOnListJobs(JobsApi.ListJobsApiResponse apiResponse)
-        {
-            OnListJobs?.Invoke(this, new ApiResponseEventArgs(apiResponse));
-        }
-
-        internal void ExecuteOnErrorListJobs(Exception exception)
-        {
-            OnErrorListJobs?.Invoke(this, new ExceptionEventArgs(exception));
-        }
-
-        /// <summary>
-        /// The event raised after the server response
-        /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnSubmitJob;
-
-        /// <summary>
-        /// The event raised after an error querying the server
-        /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorSubmitJob;
-
-        internal void ExecuteOnSubmitJob(JobsApi.SubmitJobApiResponse apiResponse)
-        {
-            OnSubmitJob?.Invoke(this, new ApiResponseEventArgs(apiResponse));
-        }
-
-        internal void ExecuteOnErrorSubmitJob(Exception exception)
-        {
-            OnErrorSubmitJob?.Invoke(this, new ExceptionEventArgs(exception));
-        }
-    }
-
-    /// <summary>
-    /// Represents a collection of functions to interact with the API endpoints
-    /// </summary>
     public sealed partial class JobsApi : IJobsApi
     {
         private JsonSerializerOptions _jsonSerializerOptions;
@@ -234,19 +163,13 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         public HttpClient HttpClient { get; }
 
         /// <summary>
-        /// The class containing the events
-        /// </summary>
-        public JobsApiEvents Events { get; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="JobsApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public JobsApi(HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, JobsApiEvents jobsApiEvents)
+        public JobsApi(HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             HttpClient = httpClient;
-            Events = jobsApiEvents;
         }
 
         partial void FormatGetJob(ref Guid jobId);
@@ -322,15 +245,12 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
                             }
                         }
 
-                        Events.ExecuteOnGetJob(apiResponseLocalVar);
-
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                Events.ExecuteOnErrorGetJob(e);
                 throw;
             }
         }
@@ -351,7 +271,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// <param name="jsonSerializerOptions"></param>
             public GetJobApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
-                OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
             /// <summary>
@@ -365,10 +284,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// <param name="jsonSerializerOptions"></param>
             public GetJobApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
-                OnCreated(httpRequestMessage, httpResponseMessage);
             }
-
-            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
 
             /// <summary>
             /// Returns true if the response is 200 Ok
@@ -533,15 +449,12 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
                             }
                         }
 
-                        Events.ExecuteOnListJobs(apiResponseLocalVar);
-
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                Events.ExecuteOnErrorListJobs(e);
                 throw;
             }
         }
@@ -562,7 +475,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// <param name="jsonSerializerOptions"></param>
             public ListJobsApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
-                OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
             /// <summary>
@@ -576,10 +488,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// <param name="jsonSerializerOptions"></param>
             public ListJobsApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
-                OnCreated(httpRequestMessage, httpResponseMessage);
             }
-
-            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
 
             /// <summary>
             /// Returns true if the response is 200 Ok
@@ -719,15 +628,12 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
                             }
                         }
 
-                        Events.ExecuteOnSubmitJob(apiResponseLocalVar);
-
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                Events.ExecuteOnErrorSubmitJob(e);
                 throw;
             }
         }
@@ -748,7 +654,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// <param name="jsonSerializerOptions"></param>
             public SubmitJobApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
-                OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
             /// <summary>
@@ -762,10 +667,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// <param name="jsonSerializerOptions"></param>
             public SubmitJobApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
-                OnCreated(httpRequestMessage, httpResponseMessage);
             }
-
-            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
 
             /// <summary>
             /// Returns true if the response is 201 Created

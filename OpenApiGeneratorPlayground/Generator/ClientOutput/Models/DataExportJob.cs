@@ -39,7 +39,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
         {
             FormatOption = format;
             DownloadUrlOption = downloadUrl;
-            OnCreated();
         }
 
         /// <summary>
@@ -48,10 +47,8 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.Models
         /// </summary>
         public DataExportJob()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Defines Format

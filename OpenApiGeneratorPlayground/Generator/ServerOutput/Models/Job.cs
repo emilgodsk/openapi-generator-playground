@@ -52,7 +52,6 @@ namespace MyPackageServer.Another.Test.Models
             SubjectOption = subject;
             FormatOption = format;
             DownloadUrlOption = downloadUrl;
-            OnCreated();
         }
 
         /// <summary>
@@ -61,10 +60,8 @@ namespace MyPackageServer.Another.Test.Models
         /// </summary>
         public Job()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Gets or Sets Status

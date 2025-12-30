@@ -37,7 +37,6 @@ namespace MyPackageServer.Another.Test.Models
         public HealthCheck200Response(Option<string?> status = default)
         {
             StatusOption = status;
-            OnCreated();
         }
 
         /// <summary>
@@ -46,10 +45,8 @@ namespace MyPackageServer.Another.Test.Models
         /// </summary>
         public HealthCheck200Response()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Used to track the state of Status

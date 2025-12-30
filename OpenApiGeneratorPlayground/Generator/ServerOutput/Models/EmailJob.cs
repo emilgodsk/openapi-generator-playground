@@ -39,7 +39,6 @@ namespace MyPackageServer.Another.Test.Models
         {
             RecipientOption = recipient;
             SubjectOption = subject;
-            OnCreated();
         }
 
         /// <summary>
@@ -48,10 +47,8 @@ namespace MyPackageServer.Another.Test.Models
         /// </summary>
         public EmailJob()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Used to track the state of Recipient

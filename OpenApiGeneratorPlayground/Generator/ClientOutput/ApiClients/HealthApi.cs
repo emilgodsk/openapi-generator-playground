@@ -31,11 +31,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
     public interface IHealthApi : IApi
     {
         /// <summary>
-        /// The class containing the events
-        /// </summary>
-        HealthApiEvents Events { get; }
-
-        /// <summary>
         /// Health check
         /// </summary>
         /// <remarks>
@@ -72,32 +67,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public class HealthApiEvents
-    {
-        /// <summary>
-        /// The event raised after the server response
-        /// </summary>
-        public event EventHandler<ApiResponseEventArgs>? OnHealthCheck;
-
-        /// <summary>
-        /// The event raised after an error querying the server
-        /// </summary>
-        public event EventHandler<ExceptionEventArgs>? OnErrorHealthCheck;
-
-        internal void ExecuteOnHealthCheck(HealthApi.HealthCheckApiResponse apiResponse)
-        {
-            OnHealthCheck?.Invoke(this, new ApiResponseEventArgs(apiResponse));
-        }
-
-        internal void ExecuteOnErrorHealthCheck(Exception exception)
-        {
-            OnErrorHealthCheck?.Invoke(this, new ExceptionEventArgs(exception));
-        }
-    }
-
-    /// <summary>
-    /// Represents a collection of functions to interact with the API endpoints
-    /// </summary>
     public sealed partial class HealthApi : IHealthApi
     {
         private JsonSerializerOptions _jsonSerializerOptions;
@@ -108,19 +77,13 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
         public HttpClient HttpClient { get; }
 
         /// <summary>
-        /// The class containing the events
-        /// </summary>
-        public HealthApiEvents Events { get; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="HealthApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public HealthApi(HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider, HealthApiEvents healthApiEvents)
+        public HealthApi(HttpClient httpClient, JsonSerializerOptionsProvider jsonSerializerOptionsProvider)
         {
             _jsonSerializerOptions = jsonSerializerOptionsProvider.Options;
             HttpClient = httpClient;
-            Events = healthApiEvents;
         }
 
         /// <summary>
@@ -189,15 +152,12 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
                             }
                         }
 
-                        Events.ExecuteOnHealthCheck(apiResponseLocalVar);
-
                         return apiResponseLocalVar;
                     }
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                Events.ExecuteOnErrorHealthCheck(e);
                 throw;
             }
         }
@@ -218,7 +178,6 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// <param name="jsonSerializerOptions"></param>
             public HealthCheckApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
             {
-                OnCreated(httpRequestMessage, httpResponseMessage);
             }
 
             /// <summary>
@@ -232,10 +191,7 @@ namespace MyPackageClient.ThisIsTest.ManyOf.Them.ApiClients
             /// <param name="jsonSerializerOptions"></param>
             public HealthCheckApiResponse(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
             {
-                OnCreated(httpRequestMessage, httpResponseMessage);
             }
-
-            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
 
             /// <summary>
             /// Returns true if the response is 200 Ok

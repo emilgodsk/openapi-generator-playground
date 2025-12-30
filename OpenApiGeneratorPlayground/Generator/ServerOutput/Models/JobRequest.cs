@@ -36,7 +36,6 @@ namespace MyPackageServer.Another.Test.Models
         public JobRequest(EmailJobRequest emailJobRequest)
         {
             EmailJobRequest = emailJobRequest;
-            OnCreated();
         }
 
         /// <summary>
@@ -46,10 +45,8 @@ namespace MyPackageServer.Another.Test.Models
         public JobRequest(DataExportJobRequest dataExportJobRequest)
         {
             DataExportJobRequest = dataExportJobRequest;
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Defines Type

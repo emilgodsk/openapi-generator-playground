@@ -38,7 +38,6 @@ namespace MyPackageServer.Another.Test.Models
         {
             EmailTargetOption = emailTarget;
             WebhookTargetOption = webhookTarget;
-            OnCreated();
         }
 
         /// <summary>
@@ -47,10 +46,8 @@ namespace MyPackageServer.Another.Test.Models
         /// </summary>
         public NotificationTarget()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Used to track the state of EmailTarget

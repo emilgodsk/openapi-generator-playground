@@ -37,7 +37,6 @@ namespace MyPackageServer.Another.Test.Models
         public WebhookTarget(string url)
         {
             Url = url;
-            OnCreated();
         }
 
         /// <summary>
@@ -46,10 +45,8 @@ namespace MyPackageServer.Another.Test.Models
         /// </summary>
         public WebhookTarget()
         {
-            OnCreated();
         }
 
-        partial void OnCreated();
 
         /// <summary>
         /// Gets or Sets Url
